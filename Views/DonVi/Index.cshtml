@@ -1,0 +1,242 @@
+﻿@{
+    ViewBag.Title = "Đơn vị";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ControllerName = "DonVi";
+}
+<style>
+    .btn-action {
+        width: 110px;
+    }
+</style>
+<div class="wrapper">
+    <div class="page">
+        <div class="page-inner">
+            <header class="page-title-bar">
+                <div class="d-md-flex align-items-md-start">
+                    <h1 class="page-title mr-sm-auto">@ViewBag.Title</h1>
+                    <div class="btn-toolbar">
+                        @*<button type="button" class="btn btn-success" onclick="Popup('@Url.Action("AddOrUpdate",ControllerName)')">Thêm</button>*@
+                    </div>
+                </div>
+            </header>
+            <div class="page-section">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card card-fluid">
+                            <div class="card-body">
+                                <h4 class="card-title"> Danh mục đơn vị </h4>
+                                <div id="jstree6"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card card-fluid">
+                            <div class="card-body">
+                                <form id="form" action="/DonVi/AddOrUpdate" method="post" onsubmit="event.preventDefault();return SubmitForm(this);">
+                                    <fieldset>
+                                        <legend>Thông tin đơn vị</legend>
+                                        <div class="form-group">
+                                            <label for="tf1">Mã đơn vị cha</label>
+                                            <input type="text" class="form-control" name="DonViChaId" id="DonViChaId" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tf1">Mã đơn vị</label>
+                                            <input type="text" class="form-control" name="Id" id="Id" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tf1">Tên đơn vị</label>
+                                            <input type="text" class="form-control" name="Ten" id="Ten" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tf1">Tên viết tắt</label>
+                                            <input type="text" class="form-control" name="TenVietTat" id="TenVietTat" />
+                                        </div>
+                                    </fieldset>
+                                    <button type="submit" class="btn btn-primary btn-action">Lưu</button>
+                                    <button type="button" class="btn btn-danger btn-action" onclick="DeleteForm()">Xóa</button>
+                                    <button type="button" class="btn btn-warning btn-action" onclick="Reset()">Reset</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function Reset() {
+            $("#form").trigger('reset');
+        }
+        function Popup(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalcontent').html(response);
+                    $("#exampleModal").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function SubmitForm(form) {
+            if (window.Loading)
+                return;
+            window.AddLoading();
+            var post_url = $(form).attr("action");
+            $.ajax({
+                url: post_url,
+                type: 'POST',
+                data: $(form).serialize(),
+                success: function (response) {
+                    if (response.Status) {
+                        toastr.success(response.Message);
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        $("#form").trigger('reset');
+                        $('#jstree6').jstree(true).refresh();
+                    } else {
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        toastr.error(response.Message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Đã xảy ra lỗi.");
+                }
+            });
+            return false;
+        }
+        function PopupDelete(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalDeleteContent').html(response);
+                    $("#exampleModalAlertDanger").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function ViewData(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#DonViChaId').val(response.DonViChaId);
+                    $('#Id').val(response.Id);
+                    $('#Ten').val(response.Ten);
+                    $('#TenVietTat').val(response.TenVietTat);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function CreateDonViCon(id) {
+            $("#form").trigger('reset');
+            var url = "/DonVi/GetById/" + id;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#DonViChaId').val(response.Id);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function DeleteForm() {
+            var url = "/DonVi/Delete/" + $("#Id").val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (response) {
+                    if (response.Status) {
+                        $('#jstree6').jstree(true).refresh();
+                        $("#form").trigger('reset');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function Delete(id) {
+            var url = "/DonVi/Delete/" + id;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (response) {
+                    if (response.Status) {
+                        $('#jstree6').jstree(true).refresh();
+                        $("#form").trigger('reset');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        $('#jstree6').on('changed.jstree', function (e, data) {
+            toastr.options = {
+                'positionClass': 'toast-bottom-right'
+            };
+            //toastr.info('The selected id is: ' + data.selected);
+            if(data.node)
+                ViewData("/DonVi/GetById/" + data.node.id)
+        }).jstree({
+            plugins: ['types', 'contextmenu'],
+            core: {
+                data: {
+                    url: '/DonVi/LoadTreeDonVi',
+                    data: function data(node) {
+                        return {
+                            id: node.id
+                        };
+                    }
+                },
+                check_callback: true
+            },
+            "contextmenu": {
+                "items": function ($node) {
+                    var tree = $("#jstree6").jstree(true);
+                    return {
+                        "Create": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Tạo đơn vị con",
+                            "action": function (obj) {
+                                CreateDonViCon($node.id);
+                            }
+                        },
+                        "Remove": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "_disabled": $node.original.root ? true : false,
+                            "label": "Xóa đơn vị",
+                            "action": function (obj) {
+                                Delete($node.id)
+                            }
+                        }
+                    };
+                }
+            },
+            types: Looper.jsTreeTypes()
+        });
+    </script>
+}

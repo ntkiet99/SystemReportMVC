@@ -1,0 +1,44 @@
+﻿@model SystemReportMVC.Models.Quyen
+@{
+    var Title = ViewBag.Title != null ? ViewBag.Title : "Thông tin";
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h6 id="clientContactEditModalLabel" class="modal-title inline-editable">
+            <input type="text" class="form-control form-control-lg" value="@Title" placeholder="Name (e.g. John Doe)" readonly disabled>
+        </h6>
+    </div>
+    @using (@Html.BeginForm("AddOrUpdate", "Quyen", FormMethod.Post, new { onsubmit = "event.preventDefault();return SubmitForm(this);" }))
+    {
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                <label for="tf1">Code</label>
+                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+            <div class="form-group">
+                <label for="tf1">Tên quyền</label>
+                @Html.EditorFor(model => model.Ten, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="select2-single">Danh mục</label>
+                @Html.ListBoxFor(model => model.MenuIds, ViewBag.ListOfMenu as MultiSelectList, new { @id = "select2-data-array", @class = "form-control", multiple = "multiple", required = "required" })
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+        </div>
+    }
+</div>
+
+<script>
+    $("#select2-data-array").select2({
+        dropdownParent: $("#exampleModal")
+    });
+</script>

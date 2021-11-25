@@ -1,42 +1,138 @@
-﻿<!DOCTYPE html>
-<html>
+﻿@using SystemReportMVC.Helpers;
+@{
+    //var userApp = (AppUser)Session[Constants.USER_SESSION];
+    var userApp = new AppUser() { HoTen = "Nguyễn Kiệt" };
+}
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> Hệ thống báo cáo </title>
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/apple-touch-icon.png">
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <meta name="theme-color" content="#3063A0">
+    <base href="localhost" />
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600" rel="stylesheet">
+    <link rel="stylesheet" href="~/Assets/vendor/open-iconic/font/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="~/Assets/vendor/fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/Assets/vendor/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Assets/vendor/bootstrap-select/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="~/Assets/toastr/toastr.min.css" />
+    <link rel="stylesheet" href="~/Assets/vendor/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/Assets/vendor/tributejs/tribute.css">
+    <link rel="stylesheet" href="~/Assets/vendor/at.js/css/jquery.atwho.min.css">
+    <link rel="stylesheet" href="~/Assets/vendor/flatpickr/flatpickr.min.css">
+    <link rel="stylesheet" href="~/Assets/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+    <link rel="stylesheet" href="~/Assets/vendor/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css">
+    <link rel="stylesheet" href="~/Assets/vendor/nouisliderribute/nouislider.min.css">
+    <link href="~/Assets/custom-scrollbar/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Assets/vendor/jstree/themes/default/style.min.css">
+    <link rel="stylesheet" href="~/Assets/stylesheets/theme.css" data-skin="default">
+    <link rel="stylesheet" href="~/Assets/stylesheets/theme-dark.min.css" data-skin="dark">
+    <link rel="stylesheet" href="~/Assets/stylesheets/custom.css">
+    <link href="~/Content/main.css" rel="stylesheet" />
+
+    <script>
+        var skin = localStorage.getItem('skin') || 'default';
+        var isCompact = JSON.parse(localStorage.getItem('hasCompactMenu'));
+        var disabledSkinStylesheet = document.querySelector('link[data-skin]:not([data-skin="' + skin + '"])');
+        // Disable unused skin immediately
+        disabledSkinStylesheet.setAttribute('rel', '');
+        disabledSkinStylesheet.setAttribute('disabled', true);
+        // add flag class to html immediately
+        if (isCompact == true) document.querySelector('html').classList.add('preparing-compact-menu');
+    </script><!-- END THEME STYLES -->
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    <div class="app">
+        <header class="app-header app-header-dark">
+            <div class="top-bar">
+                <div class="top-bar-brand">
+                    <button class="hamburger hamburger-squeeze mr-2" type="button" data-toggle="aside-menu" aria-label="toggle aside menu"><span class="hamburger-box"><span class="hamburger-inner"></span></span></button> <!-- /toggle aside menu -->
+                    <a href="/">
+                        System Report
+                    </a>
+                </div>
+                <div class="top-bar-list">
+                    <div class="top-bar-item px-2 d-md-none d-lg-none d-xl-none">
+                        <button class="hamburger hamburger-squeeze" type="button" data-toggle="aside" aria-label="toggle menu"><span class="hamburger-box"><span class="hamburger-inner"></span></span></button> <!-- /toggle menu -->
+                    </div>
+                    <div class="top-bar-item top-bar-item-right px-0 d-none d-sm-flex">
+                        <div class="dropdown d-none d-md-flex">
+                            <button class="btn-account" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="user-avatar user-avatar-md"><img src="/api/files/view/@userApp.HinhAnh" alt=""></span> <span class="account-summary pr-lg-4 d-none d-lg-block"><span class="account-name">@userApp.HoTen</span> <span class="account-description"></span></span></button> <!-- .dropdown-menu -->
+                            <div class="dropdown-menu">
+                                <div class="dropdown-arrow d-lg-none" x-arrow=""></div>
+                                <div class="dropdown-arrow ml-3 d-none d-lg-block"></div>
+                                <h6 class="dropdown-header d-none d-md-block d-lg-none"> @userApp.HoTen</h6><a class="dropdown-item" href="/profile"><span class="dropdown-icon oi oi-person"></span> Thông tin cá nhân</a> <a class="dropdown-item" href="/auth/signout"><span class="dropdown-icon oi oi-account-logout"></span> Đăng xuất</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
+        </header>
+        <aside class="app-aside app-aside-expand-md app-aside-light">
+            <div class="aside-content">
+                <header class="aside-header d-block d-md-none">
+                    <button class="btn-account" type="button" data-toggle="collapse" data-target="#dropdown-aside"><span class="user-avatar user-avatar-lg"><img src="/api/files/view/@userApp.HinhAnh" alt=""></span> <span class="account-icon"><span class="fa fa-caret-down fa-lg"></span></span> <span class="account-summary"><span class="account-name">@userApp.HoTen</span> </span></button>
+                    <div id="dropdown-aside" class="dropdown-aside collapse">
+                        <div class="pb-3">
+                            <a class="dropdown-item" href="/profile"><span class="dropdown-icon oi oi-person"></span> Thông tin</a> <a class="dropdown-item" href="/auth/signout"><span class="dropdown-icon oi oi-account-logout"></span> Đăng xuất</a>
+                        </div>
+                    </div>
+                </header>
+                <div class="aside-menu overflow-hidden">
+                    @*@{
+                            Html.RenderAction("SideBar", "Auth");
+                        }*@
+                </div>
+                <footer class="aside-footer border-top p-2">
+                    <button class="btn btn-light btn-block text-primary" data-toggle="skin"><span class="d-compact-menu-none">Night mode</span> <i class="fas fa-moon ml-1"></i></button>
+                </footer>
             </div>
-        </div>
+        </aside>
+        <main class="app-main">
+            @RenderBody()
+        </main>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <script src="~/Assets/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Assets/vendor/popper.js/umd/popper.min.js"></script>
+    <script src="~/Assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Assets/vendor/pace-progress/pace.min.js"></script>
+    <script src="~/Assets/vendor/stacked-menu/js/stacked-menu.min.js"></script>
+    <script src="~/Assets/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="~/Assets/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/vendor/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Assets/vendor/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Assets/vendor/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Assets/vendor/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Assets/vendor/handlebars/handlebars.min.js"></script>
+    <script src="~/Assets/vendor/typeahead.js/typeahead.bundle.min.js"></script>
+    <script src="~/Assets/vendor/select2/js/select2.min.js"></script>
+    <script src="~/Assets/vendor/tributejs/tribute.min.js"></script>
+    <script src="~/Assets/vendor/jquery.caret/jquery.caret.min.js"></script>
+    <script src="~/Assets/vendor/at.js/js/jquery.atwho.min.js"></script>
+    <script src="~/Assets/vendor/zxcvbn/zxcvbn.js"></script>
+    <script src="~/Assets/vendor/vanilla-text-mask/vanillaTextMask.js"></script>
+    <script src="~/Assets/vendor/text-mask-addons/textMaskAddons.js"></script>
+    <script src="~/Assets/toastr/toastr.min.js"></script>
+    <script src="~/Assets/javascript/pages/dataTables.bootstrap.js"></script>
+    <script src="~/Assets/vendor/sortablejs/Sortable.min.js"></script>
+    <script src="~/Assets/vendor/tributejs/tribute.min.js"></script>
+    <script src="~/Assets/vendor/simplemde/simplemde.min.js"></script>
+    <script src="~/Assets/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="~/Assets/vendor/masonry-layout/masonry.pkgd.min.js"></script>
+    <script src="~/Assets/vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="~/Assets/vendor/flatpickr/plugins/monthSelect/index.js"></script>
+    <script src="~/Assets/vendor/wnumb/wNumb.min.js"></script>
+    <script src="~/Assets/vendor/nouisliderribute/nouislider.min.js"></script>
+    <script src="~/Assets/vendor/easy-pie-chart/jquery.easypiechart.min.js"></script>
+    <script src="~/Assets/vendor/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/Assets/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/Assets/custom-scrollbar/jquery.mCustomScrollbar.js"></script>
+    <script src="~/Assets/vendor/jstree/jstree.min.js"></script>
+    <script src="~/Assets/javascript/theme.js"></script>
+    <script src="~/Scripts/main.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

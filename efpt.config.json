@@ -1,0 +1,65 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "SystemreportmvcContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Models",
+   "ProjectRootNamespace": "SystemReportMVC",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[DonVi]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[File]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Menu]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NguoiDung]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[NguoiDungQuyen]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Quyen]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[QuyenMenu]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TrangThai]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "DESKTOP-CT8KFM7\\SQLEXPRESS.SystemReportMVC",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": true,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}

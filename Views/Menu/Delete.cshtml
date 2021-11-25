@@ -1,0 +1,28 @@
+﻿@model SystemReportMVC.Models.Menu
+@{
+    var Title = ViewBag.Title != null ? ViewBag.Title : "Thông tin";
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 id="exampleModalAlertDangerLabel" class="modal-title">
+            <i class="fa fa-exclamation-triangle text-red mr-1"></i> @Title
+        </h5>
+    </div>
+
+    @using (@Html.BeginForm("Delete", "Menu", FormMethod.Post, new { onsubmit = "event.preventDefault();return SubmitForm(this);" }))
+    {
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(model => model.Id)
+            <p> Dữ liệu xóa sẽ không được phục hồi! </p>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Xóa</button>
+            <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+        </div>
+    }
+</div>
