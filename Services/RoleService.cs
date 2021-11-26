@@ -60,7 +60,7 @@ namespace SystemReportMVC.Services
             entity.AuditTs = DateTime.Now;
 
             _context.Quyens.Add(entity);
-            _context.SaveChanges();
+            _context.WithTitle("Thêm vai trò").SaveChanges();
 
             /// Remove menu
             var menus = _context.QuyenMenus.Where(x => x.QuyenId == entity.Id).ToList();
@@ -75,7 +75,7 @@ namespace SystemReportMVC.Services
                 if (menu != default(Menu))
                     _context.QuyenMenus.Add(new QuyenMenu() { MenuId = menu.Id, QuyenId = entity.Id });
             }
-            _context.SaveChanges();
+            _context.WithTitle("Thêm danh mục vào vai trò").SaveChangesWithLogs();
         }
 
         public void Delete(int id)
@@ -84,7 +84,8 @@ namespace SystemReportMVC.Services
             if (entity == default(Quyen))
                 throw new Exception("Không tìm thấy dữ liệu.");
             entity.IsDeleted = true;
-            _context.SaveChanges();
+            _context.Update(entity);
+            _context.WithTitle("Xóa vai trò").SaveChangesWithLogs();
         }
 
         public IEnumerable<Quyen> GetRoleByUserId(int userId)
@@ -117,7 +118,7 @@ namespace SystemReportMVC.Services
             }
             _context.NguoiDungQuyens.AddRange(quyenNguoiDungModels);
 
-            _context.SaveChanges();
+            _context.WithTitle("Thêm vai trò vào người dùng").SaveChangesWithLogs();
         }
     }
 }

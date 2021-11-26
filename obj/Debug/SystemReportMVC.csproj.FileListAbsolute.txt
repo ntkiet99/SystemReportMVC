@@ -279,4 +279,3 @@ D:\Group DThU\SystemReportMVC\bin\Unity.AspNet.WebApi.xml
 D:\Group DThU\SystemReportMVC\bin\Unity.Container.pdb
 D:\Group DThU\SystemReportMVC\bin\Antlr3.Runtime.pdb
 D:\Group DThU\SystemReportMVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.csproj.CopyComplete

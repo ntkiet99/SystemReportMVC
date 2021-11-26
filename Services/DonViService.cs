@@ -23,10 +23,6 @@ namespace SystemReportMVC.Services
             if (checkId != default(DonVi))
                 throw new Exception("Mã đơn vị đã tồn tại.");
 
-            //var checkTen = _context.DonVis.Where(x => x.Ten == model.Ten).FirstOrDefault();
-            //if (checkTen != default(DonVi))
-            //    throw new Exception("Tên đơn vị đã tồn tại.");
-
             var entity = new DonVi();
             entity.Id = model.Id;
             entity.Ten = model.Ten;
@@ -46,7 +42,7 @@ namespace SystemReportMVC.Services
                 entity.DonViChaId = donViCha.Id;
             }
             _context.DonVis.Add(entity);
-            _context.SaveChanges();
+            _context.WithTitle("Thêm đơn vị").SaveChangesWithLogs();
         }
 
         public void Delete(string id)
@@ -56,8 +52,8 @@ namespace SystemReportMVC.Services
                 throw new Exception("Tồn tại đơn vị con.");
             if (entity == default(DonVi))
                 throw new Exception("Không tìm thấy.");
-            _context.DonVis.Remove(entity);
-            _context.SaveChanges();
+            _context.Remove(entity);
+            _context.WithTitle("Xóa đơn vị").SaveChangesWithLogs();
         }
 
         public IEnumerable<DonVi> Get()
@@ -124,7 +120,9 @@ namespace SystemReportMVC.Services
                 entity.Level = donViCha.Level + 1;
                 entity.DonViChaId = donViCha.Id;
             }
-            _context.SaveChanges();
+
+            _context.Update(entity);
+            _context.WithTitle("Cập nhật đơn vị").SaveChangesWithLogs();
         }
 
         public List<DonViVM> GetTreeJS()

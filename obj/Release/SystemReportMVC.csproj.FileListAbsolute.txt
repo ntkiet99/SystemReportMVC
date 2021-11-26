@@ -97,6 +97,5 @@ D:\Group DThU\SystemReportMVC\bin\Antlr3.Runtime.pdb
 D:\Group DThU\SystemReportMVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 D:\Group DThU\SystemReportMVC\obj\Release\SystemReportMVC.csproj.AssemblyReference.cache
 D:\Group DThU\SystemReportMVC\obj\Release\SystemReportMVC.csproj.CoreCompileInputs.cache
-D:\Group DThU\SystemReportMVC\obj\Release\SystemReportMVC.csproj.CopyComplete
 D:\Group DThU\SystemReportMVC\obj\Release\SystemReportMVC.dll
 D:\Group DThU\SystemReportMVC\obj\Release\SystemReportMVC.pdb

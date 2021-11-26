@@ -19,7 +19,6 @@ namespace SystemReportMVC.Services
             _context = context;
         }
 
-
         public void Create(NguoiDung model)
         {
             if (string.IsNullOrEmpty(model.TaiKhoan))
@@ -36,7 +35,7 @@ namespace SystemReportMVC.Services
             entity.HinhAnh = model.HinhAnh;
             entity.AuditTs = DateTime.Now;
             _context.NguoiDungs.Add(entity);
-            _context.SaveChanges();
+            _context.WithTitle("Thêm người dùng mới").SaveChangesWithLogs();
         }
 
         public void Delete(int id)
@@ -46,7 +45,8 @@ namespace SystemReportMVC.Services
                 throw new Exception("Không tìm thấy dữ liệu.");
             entity.IsDeleted = true;
             entity.AuditTs = DateTime.Now;
-            _context.SaveChanges();
+            _context.Update(entity);
+            _context.WithTitle("Xóa người dùng").SaveChangesWithLogs();
         }
 
         public void DeleteNguoiDungRaKhoiDonVi(NguoiDung model)
@@ -56,7 +56,8 @@ namespace SystemReportMVC.Services
                 throw new Exception("Không tìm thấy người dùng.");
 
             nguoiDung.DonViId = null;
-            _context.SaveChanges();
+            _context.Update(nguoiDung);
+            _context.WithTitle("Xóa người dùng ra khỏi đơn vị").SaveChangesWithLogs();
         }
         public void AddNguoiDungVaoDonVi(NguoiDung model)
         {
@@ -68,7 +69,8 @@ namespace SystemReportMVC.Services
                 throw new Exception("Không tìm thấy người dùng.");
 
             nguoiDung.DonViId = donVi.Id;
-            _context.SaveChanges();
+            _context.Update(nguoiDung);
+            _context.WithTitle("Thêm người dùng vào đơn vị").SaveChangesWithLogs();
         }
 
         public IEnumerable<NguoiDung> GetAll()
@@ -131,7 +133,8 @@ namespace SystemReportMVC.Services
             entity.SoDienThoai = model.SoDienThoai;
             entity.HinhAnh = model.HinhAnh;
             entity.AuditTs = DateTime.Now;
-            _context.SaveChanges();
+            _context.Update(entity);
+            _context.WithTitle("Cập nhật người dùng").SaveChangesWithLogs();
         }
 
         public IEnumerable<NguoiDungVM> GetNguoiDungTree()
@@ -186,12 +189,12 @@ namespace SystemReportMVC.Services
                                 Path = b.Path,
                                 Active = path == b.Path ? true : false,
                             }).ToList()
-                        })            
+                        })
                         .ToList();
 
                 menus.AddRange(menuInQuyen);
             }
-           var result = menus.GroupBy(x => x.Id).Select(x => x.FirstOrDefault());
+            var result = menus.GroupBy(x => x.Id).Select(x => x.FirstOrDefault());
             return result;
         }
     }

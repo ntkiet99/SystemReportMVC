@@ -161,6 +161,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AuditLogController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DonViController.cs" />
@@ -182,12 +183,14 @@
     <Compile Include="Helpers\NguoiDungParam.cs" />
     <Compile Include="Helpers\QueryableExtensions.cs" />
     <Compile Include="Helpers\ResponseModel.cs" />
+    <Compile Include="Interfaces\IAuditLogService.cs" />
     <Compile Include="Interfaces\IDonViService.cs" />
     <Compile Include="Interfaces\IFileService.cs" />
     <Compile Include="Interfaces\IMenuService.cs" />
     <Compile Include="Interfaces\IRoleService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
-    <Compile Include="Models\Audit.cs" />
+    <Compile Include="Models\HistoryData.cs" />
+    <Compile Include="Models\AuditEntry.cs" />
     <Compile Include="Models\DonVi.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Menu.cs" />
@@ -197,12 +200,14 @@
     <Compile Include="Models\QuyenMenu.cs" />
     <Compile Include="Models\TrangThai.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AuditLogService.cs" />
     <Compile Include="Services\DonViService.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\MenuService.cs" />
     <Compile Include="Services\PermissionService.cs" />
     <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="ViewModels\AuditLogVM.cs" />
     <Compile Include="ViewModels\DonViVM.cs" />
     <Compile Include="ViewModels\GenericMessageVM.cs" />
     <Compile Include="ViewModels\NguoiDungVM.cs" />
@@ -8824,6 +8829,7 @@
     <Content Include="Views\NguoiDung\PhanDonVi.cshtml" />
     <Content Include="Views\Auth\Index.cshtml" />
     <Content Include="Views\Auth\SideBar.cshtml" />
+    <Content Include="Views\AuditLog\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

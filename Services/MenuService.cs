@@ -50,7 +50,7 @@ namespace SystemReportMVC.Services
             entity.AuditTs = DateTime.Now;
             entity.CreateAt = DateTime.Now;
             _context.Menus.Add(entity);
-            _context.SaveChanges();
+            _context.WithTitle("Tạo danh mục mới").SaveChangesWithLogs();
         }
 
         public void Delete(int id)
@@ -59,7 +59,8 @@ namespace SystemReportMVC.Services
             if (entity == default(Menu))
                 throw new Exception("Không tìm thấy.");
             entity.IsDeleted = true;
-            _context.SaveChanges();
+            _context.Update(entity);
+            _context.WithTitle("Xóa danh mục").SaveChangesWithLogs();
         }
 
         public Menu GetById(int id)
@@ -93,8 +94,8 @@ namespace SystemReportMVC.Services
             entity.ThuTuHienThi = model.ThuTuHienThi;
             entity.IsDeleted = false;
             entity.AuditTs = DateTime.Now;
-
-            _context.SaveChanges();
+            _context.Update(entity);
+            _context.WithTitle("Cập nhật danh mục mới").SaveChangesWithLogs();
         }
     }
 }
