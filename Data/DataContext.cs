@@ -36,7 +36,7 @@ namespace SystemReportMVC.Data
                 case "anhdev99":
                     Connection += @"DevConnectionString";
                     break;
-                case "administrator":
+                case "khanhvd":
                     Connection += @"ProductionConnectionString";
                     break;
             }
