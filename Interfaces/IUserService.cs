@@ -20,6 +20,6 @@ namespace SystemReportMVC.Interfaces
         IEnumerable<NguoiDungVM> GetNguoiDungTree();
         NguoiDung SignIn(NguoiDung model);
 
-        IEnumerable<Menu> GetMenusByUserId(int id);
+        IEnumerable<Menu> GetMenusByUserId(int id, string path);
     }
 }

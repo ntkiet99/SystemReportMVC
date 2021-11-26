@@ -34,6 +34,7 @@ namespace SystemReportMVC.Data
                     .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Quyen>().Ignore(e => e.Menus);
+            modelBuilder.Entity<Menu>().Ignore(e => e.Active);
             modelBuilder.Entity<Quyen>().Ignore(e => e.MenuIds);
             modelBuilder.Entity<NguoiDung>().HasOptional(d => d.DonVi)
                    .WithMany(p => p.NguoiDung)

@@ -37,5 +37,8 @@ namespace SystemReportMVC.Models
         public virtual ICollection<Menu> MenuCons { get; set; }
         [InverseProperty("Menu")]
         public virtual ICollection<QuyenMenu> QuyenMenu { get; set; }
+
+        [NotMapped]
+        public bool Active { get; set; } = false;
     }
 }

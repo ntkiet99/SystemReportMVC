@@ -61,13 +61,27 @@ namespace SystemReportMVC.Controllers
 
         public ActionResult SideBar()
         {
+            var url = Request.RequestContext.HttpContext.Request.RawUrl;
             var session = (AppUser)Session[Constants.USER_SESSION];
             if (session == null)
                 return RedirectToAction("Index", "Auth");
-            var menus = _userService.GetMenusByUserId(session.Id);
+            var menus = _userService.GetMenusByUserId(session.Id, url);
             if (menus == null)
                 SignOut();
-            return View(menus.ToList()) ;
+            var menusCha = menus.ToList();
+            foreach (var cha in menusCha)
+            {
+                if (cha.MenuCons.Count() > 0)
+                {
+                    var menucon = cha.MenuCons.Where(x => x.Active).FirstOrDefault();
+                    if (menucon != null)
+                        cha.Active = true;
+                }
+            }
+            var checkMenuActive = menusCha.Where(x => x.Active).FirstOrDefault();
+            if (checkMenuActive == null)
+                menusCha.FirstOrDefault().Active = true;
+            return View(menusCha);
         }
     }
 }

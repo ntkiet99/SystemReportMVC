@@ -159,7 +159,7 @@ namespace SystemReportMVC.Services
             return entity;
         }
 
-        public IEnumerable<Menu> GetMenusByUserId(int id)
+        public IEnumerable<Menu> GetMenusByUserId(int id, string path)
         {
             var nguoiDungQuyens = _context.NguoiDungQuyens.Where(x => x.NguoiDungId == id).ToList();
             if (nguoiDungQuyens.Count() <= 0)
@@ -171,10 +171,27 @@ namespace SystemReportMVC.Services
             foreach (var item in quyens)
             {
                 var menuChaIds = item.QuyenMenu.Select(x => x.MenuId).ToList();
-                var menuInQuyen = _context.Menus.Include(x => x.MenuCons).Where(x => menuChaIds.Contains(x.Id) && x.MenuChaId == null).ToList();
+                var menuInQuyen = _context.Menus.Include(x => x.MenuCons).Where(x => menuChaIds.Contains(x.Id) && x.MenuChaId == null).ToList()
+                        .Select(x => new Menu()
+                        {
+                            Id = x.Id,
+                            Ten = x.Ten,
+                            Icon = x.Icon,
+                            Path = x.Path,
+                            MenuCons = x.MenuCons.Select(b => new Menu()
+                            {
+                                Id = b.Id,
+                                Ten = b.Ten,
+                                Icon = b.Icon,
+                                Path = b.Path,
+                                Active = path == b.Path ? true : false,
+                            }).ToList()
+                        })            
+                        .ToList();
+
                 menus.AddRange(menuInQuyen);
             }
-           var result = menus.Distinct();
+           var result = menus.GroupBy(x => x.Id).Select(x => x.FirstOrDefault());
             return result;
         }
     }

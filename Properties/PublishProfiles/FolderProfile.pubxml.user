@@ -25889,10 +25889,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2021 08:08:49</publishTime>
     </File>
     <File Include="bin/SystemReportMVC.dll">
-      <publishTime>11/26/2021 20:33:08</publishTime>
+      <publishTime>11/26/2021 22:08:18</publishTime>
     </File>
     <File Include="bin/SystemReportMVC.pdb">
-      <publishTime>11/26/2021 20:33:08</publishTime>
+      <publishTime>11/26/2021 22:08:18</publishTime>
     </File>
     <File Include="bin/Unity.Abstractions.dll">
       <publishTime>11/26/2021 08:08:49</publishTime>
@@ -26024,7 +26024,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2021 19:50:22</publishTime>
     </File>
     <File Include="Views/Auth/SideBar.cshtml">
-      <publishTime>11/26/2021 20:01:15</publishTime>
+      <publishTime>11/26/2021 22:07:27</publishTime>
     </File>
     <File Include="Views/DonVi/Add.cshtml">
       <publishTime>11/26/2021 08:08:48</publishTime>
@@ -26066,7 +26066,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2021 16:53:11</publishTime>
     </File>
     <File Include="Views/NguoiDung/PhanQuyen.cshtml">
-      <publishTime>11/26/2021 18:24:05</publishTime>
+      <publishTime>11/26/2021 21:23:02</publishTime>
     </File>
     <File Include="Views/Quyen/Add.cshtml">
       <publishTime>11/26/2021 08:08:48</publishTime>
@@ -26090,7 +26090,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2021 08:08:48</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/26/2021 20:33:15</publishTime>
+      <publishTime>11/26/2021 22:10:25</publishTime>
     </File>
   </ItemGroup>
 </Project>
