@@ -151,5 +151,31 @@ namespace SystemReportMVC.Services
 
             return nguoiDungs;
         }
+
+        public NguoiDung SignIn(NguoiDung model)
+        {
+            var entity = _context.NguoiDungs.Where(x => x.TaiKhoan == model.TaiKhoan && x.MatKhau == model.MatKhau).FirstOrDefault();
+
+            return entity;
+        }
+
+        public IEnumerable<Menu> GetMenusByUserId(int id)
+        {
+            var nguoiDungQuyens = _context.NguoiDungQuyens.Where(x => x.NguoiDungId == id).ToList();
+            if (nguoiDungQuyens.Count() <= 0)
+                throw new Exception("Không tìm thấy quyền.");
+            var quyenIds = nguoiDungQuyens.Select(x => x.QuyenId).ToList();
+
+            var quyens = _context.Quyens.Include(x => x.QuyenMenu.Select(b => b.Menu)).Where(x => quyenIds.Contains(x.Id)).ToList();
+            var menus = new List<Menu>();
+            foreach (var item in quyens)
+            {
+                var menuChaIds = item.QuyenMenu.Select(x => x.MenuId).ToList();
+                var menuInQuyen = _context.Menus.Include(x => x.MenuCons).Where(x => menuChaIds.Contains(x.Id) && x.MenuChaId == null).ToList();
+                menus.AddRange(menuInQuyen);
+            }
+           var result = menus.Distinct();
+            return result;
+        }
     }
 }

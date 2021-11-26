@@ -7,7 +7,7 @@ using SystemReportMVC.ViewModels;
 
 namespace SystemReportMVC.Controllers
 {
-    public class MenuController : Controller
+    public class MenuController : BaseController
     {
         private readonly IMenuService _menuService;
         string ControllerName = "danh mục";

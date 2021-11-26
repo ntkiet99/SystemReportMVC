@@ -13,7 +13,6 @@ namespace SystemReportMVC.Data
         public virtual DbSet<Quyen> Quyens { get; set; }
         public virtual DbSet<QuyenMenu> QuyenMenus { get; set; }
         public virtual DbSet<TrangThai> TrangThais { get; set; }
-
         public DataContext() : base("name=DataContextConnectionString")
         {
             this.Configuration.ProxyCreationEnabled = false;

@@ -1,0 +1,275 @@
+﻿@{
+    ViewBag.Title = "Phân Quyền";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ControllerName = "NguoiDung";
+}
+<style>
+    .btn-action {
+        width: 110px;
+    }
+</style>
+<div class="wrapper">
+    <div class="page">
+        <div class="page-inner">
+            <header class="page-title-bar">
+                <div class="d-md-flex align-items-md-start">
+                    <h1 class="page-title mr-sm-auto">@ViewBag.Title</h1>
+                    <div class="btn-toolbar">
+                        @*<button type="button" class="btn btn-success" onclick="Popup('@Url.Action("AddOrUpdate",ControllerName)')">Thêm</button>*@
+                    </div>
+                </div>
+            </header>
+            <div class="page-section">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card card-fluid">
+                            <div class="card-body">
+                                <h4 class="card-title"> Danh mục đơn vị </h4>
+                                <div id="jstree6"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card card-fluid">
+                            <div class="card-body">
+                                <form id="form" action="/Quyen/AddQuyenVaoNguoiDung" method="post" onsubmit="event.preventDefault();return SubmitForm(this);">
+                                    <fieldset>
+                                        <legend>Phân quyền cho người dùng</legend>
+                                        <input type="hidden" class="form-control" name="Id" id="Id" />
+                                        <div class="form-group">
+                                            <label for="tf1">Tên tài khoản</label>
+                                            <input type="text" class="form-control" name="TaiKhoan" id="TaiKhoan" readonly />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tf1">Họ và tên</label>
+                                            <input type="text" class="form-control" name="HoTen" id="HoTen" readonly />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tf1">Tên đơn vị</label>
+                                            <input type="text" class="form-control" name="TenDonVi" id="TenDonVi" readonly />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="tf1">Danh sách quyền</label>
+                                            <select id="QuyenIds" name="QuyenIds" class="form-control" data-toggle="select2" data-placeholder="Chọn quyền" data-allow-clear="true" multiple>
+                                            </select>
+                                        </div>
+                                    </fieldset>
+                                    <button type="submit" class="btn btn-primary btn-action">Lưu</button>
+                                    <button type="button" class="btn btn-warning btn-action" onclick="Reset()">Reset</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            ListQuyen();
+        })
+        function Reset() {
+            $("#form").trigger('reset');
+        }
+        function Popup(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalcontent').html(response);
+                    $("#exampleModal").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function SubmitForm(form) {
+            if (window.Loading)
+                return;
+            window.AddLoading();
+            var post_url = $(form).attr("action");
+            $.ajax({
+                url: post_url,
+                type: 'POST',
+                data: $(form).serialize(),
+                success: function (response) {
+                    if (response.Status) {
+                        toastr.success(response.Message);
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                                            } else {
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        toastr.error(response.Message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Đã xảy ra lỗi.");
+                }
+            });
+            return false;
+        }
+        function PopupDelete(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalDeleteContent').html(response);
+                    $("#exampleModalAlertDanger").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function ViewData(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#TaiKhoan').val(response.TaiKhoan);
+                    $('#Id').val(response.Id);
+                    $('#HoTen').val(response.HoTen);
+                    $('#TenDonVi').val(response.DonVi.Ten);
+                    //console.log(response);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function DeleteForm() {
+            var url = "/DonVi/Delete/" + $("#Id").val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (response) {
+                    if (response.Status) {
+                        $('#jstree6').jstree(true).refresh();
+                        $("#form").trigger('reset');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function Delete(id) {
+            var url = "/DonVi/Delete/" + id;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (response) {
+                    if (response.Status) {
+                        $('#jstree6').jstree(true).refresh();
+                        $("#form").trigger('reset');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        $('#jstree6').on('changed.jstree', function (e, data) {
+            toastr.options = {
+                'positionClass': 'toast-bottom-right'
+            };
+            //toastr.info('The selected id is: ' + data.selected);
+            if (data.node) {
+                GetQuyenByUserId(data.node.id);
+                ViewData("/NguoiDung/GetById/"+data.node.id);
+            }
+
+        }).jstree({
+            plugins: ['types'],
+            core: {
+                data: {
+                    url: '/NguoiDung/GetNguoiDungTree',
+                    data: function data(node) {
+                        return {
+                            id: node.id
+                        };
+                    }
+                },
+                check_callback: true
+            },
+            //"contextmenu": {
+            //    "items": function ($node) {
+            //        var tree = $("#jstree6").jstree(true);
+            //        return {
+            //            "Create": {
+            //                "separator_before": false,
+            //                "separator_after": false,
+            //                "label": "Tạo đơn vị con",
+            //                "action": function (obj) {
+            //                    CreateDonViCon($node.id);
+            //                }
+            //            },
+            //            "Remove": {
+            //                "separator_before": false,
+            //                "separator_after": false,
+            //                "_disabled": $node.original.root ? true : false,
+            //                "label": "Xóa đơn vị",
+            //                "action": function (obj) {
+            //                    Delete($node.id)
+            //                }
+            //            }
+            //        };
+            //    }
+            //},
+            types: Looper.jsTreeTypes()
+        });
+
+
+        function RenderButtonItem(ID) {
+            var str = "";
+            str += '<a style="margin-top: 0px" class="btn btn-sm btn-icon btn-danger" data-toggle="tooltip" data-placement="top" data-original-title="Xóa" onclick="DeleteNguoiDungRaKhoiDonVi(\'/NguoiDung/DeleteNguoiDungRaKhoiDonVi/' + ID + '\')"><i class="far fa-trash-alt" style="color: white"></i></a>';
+            return str;
+        }
+
+        function ListQuyen() {
+            var url = "/Quyen/GetList";
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    var data = response;
+                    data.map((value, index) => {
+                        var $newOption = $("<option></option>").val(value.Id).text(value.Ten)
+
+                        $("#QuyenIds").append($newOption).trigger('change');
+                    })
+
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function GetQuyenByUserId(id) {
+            var url = "/Quyen/GetQuyenByUserId/" + id;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $("#QuyenIds").val(response);
+                    $("#QuyenIds").trigger('change');
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+    </script>
+}

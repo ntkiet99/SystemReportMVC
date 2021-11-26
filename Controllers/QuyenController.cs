@@ -11,7 +11,7 @@ using SystemReportMVC.ViewModels;
 
 namespace SystemReportMVC.Controllers
 {
-    public class QuyenController : Controller
+    public class QuyenController : BaseController
     {
         public DataContext _context;
         private string ControllerName = "quyền";

@@ -9,7 +9,7 @@ using SystemReportMVC.ViewModels;
 
 namespace SystemReportMVC.Controllers
 {
-    public class DonViController : Controller
+    public class DonViController : BaseController
     {
         private readonly IDonViService _donViService;
         string ControllerName = "đơn vị";

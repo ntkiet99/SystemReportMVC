@@ -18,5 +18,8 @@ namespace SystemReportMVC.Interfaces
         void DeleteNguoiDungRaKhoiDonVi(NguoiDung model);
 
         IEnumerable<NguoiDungVM> GetNguoiDungTree();
+        NguoiDung SignIn(NguoiDung model);
+
+        IEnumerable<Menu> GetMenusByUserId(int id);
     }
 }

@@ -8,7 +8,7 @@ using SystemReportMVC.ViewModels;
 
 namespace SystemReportMVC.Controllers
 {
-    public class NguoiDungController : Controller
+    public class NguoiDungController : BaseController
     {
         // GET: NguoiDung
         private readonly IUserService _userService;

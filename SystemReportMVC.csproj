@@ -161,6 +161,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityWebApiActivator.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DonViController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -422,6 +423,7 @@
     <Content Include="Assets\javascript\pages\user-settings-demo.min.js" />
     <Content Include="Assets\javascript\theme.js" />
     <Content Include="Assets\javascript\theme.min.js" />
+    <Content Include="Assets\logo\logo.jpg" />
     <Content Include="Assets\stylesheets\custom-dark.css" />
     <Content Include="Assets\stylesheets\custom-dark.min.css" />
     <Content Include="Assets\stylesheets\custom.css" />
@@ -8820,6 +8822,8 @@
     <Content Include="Views\NguoiDung\Index.cshtml" />
     <Content Include="Views\NguoiDung\PhanQuyen.cshtml" />
     <Content Include="Views\NguoiDung\PhanDonVi.cshtml" />
+    <Content Include="Views\Auth\Index.cshtml" />
+    <Content Include="Views\Auth\SideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

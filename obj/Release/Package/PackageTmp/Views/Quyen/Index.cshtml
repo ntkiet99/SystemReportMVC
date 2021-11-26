@@ -1,0 +1,175 @@
+﻿@model List<SystemReportMVC.Models.Quyen>
+@{
+    ViewBag.Title = "Quyền";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var index = 0;
+}
+<div class="wrapper">
+    <div class="page">
+        <div class="page-inner">
+            <header class="page-title-bar">
+                <div class="d-md-flex align-items-md-start">
+                    <h1 class="page-title mr-sm-auto">@ViewBag.Title </h1><!-- .btn-toolbar -->
+                    <div class="btn-toolbar">
+                        <button type="button" class="btn btn-success" onclick="Popup('@Url.Action("AddOrUpdate","Quyen")')">Thêm</button>
+                    </div>
+                </div>
+            </header>
+            <div class="page-section">
+                <div class="card card-fluid">
+                    <div class="card-body">
+                        <table id="datatable" class="table">
+                            <thead>
+                                <tr>
+                                    <th style="max-width: 100px;"> STT </th>
+                                    <th>Code</th>
+                                    <th>Tên quyền</th>
+                                    <th>Danh mục</th>
+                                    <th>Ngày cập nhật</th>
+                                    <th style="width:150px; min-width:120px;"> &nbsp; </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        index++;
+                                        <tr>
+                                            <td>
+                                                @index
+                                            </td>
+                                            <td>
+                                                @item.Code
+                                            </td>
+                                            <td>
+                                                @item.Ten
+                                            </td>
+                                            <td>
+                                                @foreach (var menu in item.Menus)
+                                                {
+                                                    <button type="button" class="btn-sm btn btn-subtle-info">@menu.Ten</button>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @item.AuditTs
+                                            </td>
+                                            <td class=" align-middle text-right">
+                                                @{
+                                                    var uEdit = @Url.Action("AddOrUpdate", "Quyen") + "/" + item.Id;
+                                                    var urlEdit = @"Popup('" + uEdit + "')";
+                                                    <a class="btn btn-sm btn-icon btn-info" onclick="@urlEdit" href="javascript:void(0)"><i class="fa fa-pencil-alt"></i></a>
+
+                                                    var uDelete = @Url.Action("Delete", "Quyen") + "/" + item.Id;
+                                                        var urluDelete = @"PopupDelete('" + uDelete + "')";
+
+                                                        <a class="btn btn-sm btn-icon btn-danger" onclick="@urluDelete" href="javascript:void(0)"><i class="far fa-trash-alt"></i></a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="clientContactEditModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document" id="modalcontent">
+                </div>
+            </div>
+            <div class="modal modal-alert fade" id="exampleModalAlertDanger" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalAlertDangerLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document" id="modalDeleteContent">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#select2-data-array").select2({
+                dropdownParent: $("#exampleModal")
+            });
+            $('#datatable').DataTable({
+                dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n        <'table-responsive'tr>\n        <'row align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+                language: {
+                    paginate: {
+                        previous: '<i class="fa fa-lg fa-angle-left"></i>',
+                        next: '<i class="fa fa-lg fa-angle-right"></i>'
+                    }
+                },
+                autoWidth: false,
+                deferRender: true
+            });
+
+            $('.modal').modal({
+                show: false,
+                keyboard: false,
+                backdrop: 'static'
+            });
+        })
+
+        function Popup(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalcontent').html(response);
+                    $("#exampleModal").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function SubmitForm(form) {
+            if (window.Loading)
+                return;
+            window.AddLoading();
+            var post_url = $(form).attr("action");
+            $.ajax({
+                url: post_url,
+                type: 'POST',
+                data: $(form).serialize(),
+                success: function (response) {
+                    if (response.Status) {
+                        toastr.success(response.Message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    } else {
+
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        toastr.error(response.Message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Đã xảy ra lỗi.");
+                }
+            });
+            return false;
+        }
+
+        function PopupDelete(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalDeleteContent').html(response);
+                    $("#exampleModalAlertDanger").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+    </script>
+}
