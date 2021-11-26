@@ -40,5 +40,8 @@ namespace SystemReportMVC.Models
         public virtual DonVi DonVi { get; set; }
         [InverseProperty("NguoiDung")]
         public virtual ICollection<NguoiDungQuyen> NguoiDungQuyen { get; set; }
+
+        [NotMapped]
+        public int RowNum { get; set; }
     }
 }

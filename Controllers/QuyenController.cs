@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -100,6 +102,47 @@ namespace SystemReportMVC.Controllers
                 {
                     Status = true,
                     Message = $"Xóa {ControllerName} thành công!",
+                    MessageType = GenericMessage.success
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new GenericMessageVM()
+                {
+                    Status = false,
+                    Message = $"{ex.Message}",
+                    MessageType = GenericMessage.error
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetQuyenByUserId(int id)
+        {
+            var data = _roleService.GetRoleByUserId(id);
+            JsonSerializerSettings jss = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            var result = JsonConvert.SerializeObject(data.Select(x => x.Id).ToList(), Formatting.Indented, jss);
+            return Json(JsonConvert.DeserializeObject<List<string>>(result), JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult GetList()
+        {
+            var data = _roleService.GetList();
+            JsonSerializerSettings jss = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            var result = JsonConvert.SerializeObject(data, Formatting.Indented, jss);
+            return Json(JsonConvert.DeserializeObject<List<Quyen>>(result), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddQuyenVaoNguoiDung(QuyenNguoiDungVM model)
+        {
+            try
+            {
+                _roleService.AddQuyenVaoNguoiDung(model);
+                return Json(new GenericMessageVM()
+                {
+                    Status = true,
+                    Message = $"Cập nhật {ControllerName} thành công!",
                     MessageType = GenericMessage.success
                 }, JsonRequestBehavior.AllowGet);
             }

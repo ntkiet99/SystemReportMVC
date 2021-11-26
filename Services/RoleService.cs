@@ -5,6 +5,7 @@ using System.Linq;
 using SystemReportMVC.Data;
 using SystemReportMVC.Interfaces;
 using SystemReportMVC.Models;
+using SystemReportMVC.ViewModels;
 
 namespace SystemReportMVC.Services
 {
@@ -83,6 +84,39 @@ namespace SystemReportMVC.Services
             if (entity == default(Quyen))
                 throw new Exception("Không tìm thấy dữ liệu.");
             entity.IsDeleted = true;
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Quyen> GetRoleByUserId(int userId)
+        {
+            var roles = _context.NguoiDungQuyens.Include(x => x.Quyen).Where(x => x.NguoiDungId == userId).Select(x => x.Quyen).ToList();
+            return roles;
+        }
+
+        public void AddQuyenVaoNguoiDung(QuyenNguoiDungVM model)
+        {
+            var nguoiDung = _context.NguoiDungs.Where(x => x.IsDeleted != true && x.Id == model.Id).FirstOrDefault();
+            if (nguoiDung == default(NguoiDung))
+                throw new Exception("Không tìm thấy người dùng.");
+
+            var quyenNguoiDungModels = new List<NguoiDungQuyen>();
+            var quyen = _context.Quyens.Where(x => x.IsDeleted != true && model.QuyenIds.Contains(x.Id)).ToList() ?? new List<Quyen>();
+            if (quyen.Count() <= 0)
+                throw new Exception("Danh sách quyền rỗng.");
+
+            var quyenNguoiDungs = _context.NguoiDungQuyens.Where(x => x.NguoiDungId == model.Id).ToList();
+            if (quyenNguoiDungs.Count() > 0)
+            {
+                _context.NguoiDungQuyens.RemoveRange(quyenNguoiDungs);
+                _context.SaveChanges();
+            }
+
+            foreach (var item in quyen)
+            {
+                quyenNguoiDungModels.Add(new NguoiDungQuyen() { NguoiDungId = nguoiDung.Id, QuyenId = item.Id });
+            }
+            _context.NguoiDungQuyens.AddRange(quyenNguoiDungModels);
+
             _context.SaveChanges();
         }
     }

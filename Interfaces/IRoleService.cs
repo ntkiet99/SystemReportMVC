@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SystemReportMVC.Models;
+using SystemReportMVC.ViewModels;
 
 namespace SystemReportMVC.Interfaces
 {
@@ -9,5 +10,8 @@ namespace SystemReportMVC.Interfaces
         IEnumerable<Quyen> GetList();
         void Create(Quyen model);
         void Delete(int id);
+
+        IEnumerable<Quyen> GetRoleByUserId(int userId);
+        void AddQuyenVaoNguoiDung(QuyenNguoiDungVM model);
     }
 }

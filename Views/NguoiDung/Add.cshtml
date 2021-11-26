@@ -1,0 +1,52 @@
+﻿@model SystemReportMVC.Models.NguoiDung
+@{
+    var Title = ViewBag.Title != null ? ViewBag.Title : "Thông tin";
+    Layout = null;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h6 id="clientContactEditModalLabel" class="modal-title inline-editable">
+            <input type="text" class="form-control form-control-lg" value="@Title" placeholder="Name (e.g. John Doe)" readonly disabled>
+        </h6>
+    </div>
+    @using (@Html.BeginForm("AddOrUpdate", "NguoiDung", FormMethod.Post, new { onsubmit = "event.preventDefault();return SubmitForm(this);" }))
+    {
+<div class="modal-body">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        <label for="tf1">Tài khoản</label>
+        @Html.EditorFor(model => model.TaiKhoan, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+    </div>
+    <div class="form-group">
+        <label for="tf1">Mật khẩu</label>
+        @Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+    </div>
+    <div class="form-group">
+        <label for="tf1">Họ và tên</label>
+        @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+    </div>
+    <div class="form-group">
+        <label for="tf1">Số điện thoại</label>
+        @Html.EditorFor(model => model.SoDienThoai, new { htmlAttributes = new { @class = "form-control"} })
+    </div>
+    <div class="form-group">
+        <label for="tf1">Email</label>
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+</div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+        </div>
+    }
+</div>
+
+<script>
+    $("#select2-data-array").select2({
+        dropdownParent: $("#exampleModal")
+    });
+</script>
