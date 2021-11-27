@@ -11,10 +11,22 @@
    "ProjectRootNamespace": "SystemReportMVC",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
-   "SelectedToBeGenerated": 2,
+   "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[HistoryData]",
+         "Name": "[dbo].[ChiTieus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[KyBaoCaos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MauBieus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ThuocTinhs]",
          "ObjectType": 0
       }
    ],

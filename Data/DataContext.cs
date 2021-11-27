@@ -25,6 +25,10 @@ namespace SystemReportMVC.Data
         public virtual DbSet<QuyenMenu> QuyenMenus { get; set; }
         public virtual DbSet<TrangThai> TrangThais { get; set; }
         public virtual DbSet<HistoryData> HistoryDatas { get; set; }
+        public virtual DbSet<ChiTieus> ChiTieus { get; set; }
+        public virtual DbSet<KyBaoCaos> KyBaoCaos { get; set; }
+        public virtual DbSet<MauBieus> MauBieus { get; set; }
+        public virtual DbSet<ThuocTinhs> ThuocTinhs { get; set; }
         public static string GetCFConnection()
         {
             string Connection = "name=";
@@ -90,6 +94,26 @@ namespace SystemReportMVC.Data
                 .WithMany(p => p.QuyenMenu)
                 .HasForeignKey(d => d.QuyenId)
                 .WillCascadeOnDelete(false);
+            modelBuilder.Entity<ChiTieus>().HasOptional(d => d.ChiTieuCha)
+                              .WithMany(p => p.ChiTieuCons)
+                              .HasForeignKey(d => d.ChiTieuChaId)
+                              .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ChiTieus>().HasOptional(d => d.MauBieu)
+                .WithMany(p => p.ChiTieus)
+                .HasForeignKey(d => d.MauBieuId)
+                       .WillCascadeOnDelete(false);
+            modelBuilder.Entity<MauBieus>().HasOptional(d => d.MauBieuCha)
+                              .WithMany(p => p.MauBieuCons)
+                              .HasForeignKey(d => d.MauBieuChaId)
+                             .WillCascadeOnDelete(false);
+            modelBuilder.Entity<ThuocTinhs>().HasOptional(d => d.MauBieu)
+                   .WithMany(p => p.ThuocTinhs)
+                   .HasForeignKey(d => d.MauBieuId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ThuocTinhs>().HasOptional(d => d.ThuocTinhCha)
+                .WithMany(p => p.ThuocTinhCons)
+                .HasForeignKey(d => d.ThuocTinhChaId).WillCascadeOnDelete(false);
         }
         private bool IsEfRecordAudit { get; set; }
         private List<string> IgnoreTables = new List<string>();
