@@ -5,6 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>D:\Group DThU\SystemReportMVC.Release</_PublishTargetUrl>
+    <History>True|2021-11-27T15:31:15.8503964Z;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="Assets/apple-touch-icon.png">
@@ -25889,10 +25890,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2021 08:08:49</publishTime>
     </File>
     <File Include="bin/SystemReportMVC.dll">
-      <publishTime>11/27/2021 01:25:46</publishTime>
+      <publishTime>11/27/2021 22:31:08</publishTime>
     </File>
     <File Include="bin/SystemReportMVC.pdb">
-      <publishTime>11/27/2021 01:25:46</publishTime>
+      <publishTime>11/27/2021 22:31:08</publishTime>
     </File>
     <File Include="bin/Unity.Abstractions.dll">
       <publishTime>11/26/2021 08:08:49</publishTime>
@@ -25955,7 +25956,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2021 08:08:48</publishTime>
     </File>
     <File Include="efpt.config.json">
-      <publishTime>11/26/2021 23:20:21</publishTime>
+      <publishTime>11/27/2021 10:40:05</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>11/26/2021 08:08:48</publishTime>
@@ -26029,6 +26030,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Views/Auth/SideBar.cshtml">
       <publishTime>11/26/2021 22:07:27</publishTime>
     </File>
+    <File Include="Views/BaoCao/Index.cshtml">
+      <publishTime>11/27/2021 20:33:36</publishTime>
+    </File>
     <File Include="Views/DonVi/Add.cshtml">
       <publishTime>11/26/2021 08:08:48</publishTime>
     </File>
@@ -26036,7 +26040,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2021 08:08:48</publishTime>
     </File>
     <File Include="Views/DonVi/Index.cshtml">
-      <publishTime>11/26/2021 08:08:48</publishTime>
+      <publishTime>11/27/2021 15:59:33</publishTime>
     </File>
     <File Include="Views/Home/About.cshtml">
       <publishTime>11/26/2021 08:08:48</publishTime>
@@ -26047,14 +26051,26 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Views/Home/Index.cshtml">
       <publishTime>11/26/2021 08:08:48</publishTime>
     </File>
+    <File Include="Views/KyBaoCao/Index.cshtml">
+      <publishTime>11/27/2021 15:38:07</publishTime>
+    </File>
+    <File Include="Views/MauBieu/Add.cshtml">
+      <publishTime>11/27/2021 17:16:12</publishTime>
+    </File>
+    <File Include="Views/MauBieu/Delete.cshtml">
+      <publishTime>11/27/2021 17:16:12</publishTime>
+    </File>
+    <File Include="Views/MauBieu/Index.cshtml">
+      <publishTime>11/27/2021 17:20:23</publishTime>
+    </File>
     <File Include="Views/Menu/Add.cshtml">
-      <publishTime>11/26/2021 08:08:48</publishTime>
+      <publishTime>11/27/2021 17:15:51</publishTime>
     </File>
     <File Include="Views/Menu/Delete.cshtml">
-      <publishTime>11/26/2021 08:08:48</publishTime>
+      <publishTime>11/27/2021 17:15:51</publishTime>
     </File>
     <File Include="Views/Menu/Index.cshtml">
-      <publishTime>11/26/2021 08:08:48</publishTime>
+      <publishTime>11/27/2021 17:15:51</publishTime>
     </File>
     <File Include="Views/NguoiDung/Add.cshtml">
       <publishTime>11/26/2021 19:21:25</publishTime>
@@ -26084,7 +26100,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2021 08:08:48</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>11/26/2021 20:29:21</publishTime>
+      <publishTime>11/27/2021 19:15:52</publishTime>
+    </File>
+    <File Include="Views/ThuocTinh/Index.cshtml">
+      <publishTime>11/27/2021 22:12:32</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>11/26/2021 08:08:48</publishTime>

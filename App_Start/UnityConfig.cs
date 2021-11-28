@@ -21,6 +21,10 @@ namespace SystemReportMVC
             container.RegisterType<IRoleService, RoleService>();
             container.RegisterType<IUserService, UserService>();
             container.RegisterType<IAuditLogService, AuditLogService>();
+            container.RegisterType<IKyBaoCaoService, KyBaoCaoService>();
+            container.RegisterType<IMauBieuService, MauBieuService>();
+            container.RegisterType<IThuocTinhService, ThuocTinhService>();
+            container.RegisterType<IChiTieuService, ChiTieuService>();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

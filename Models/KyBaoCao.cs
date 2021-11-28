@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SystemReportMVC.Models
 {
-    public partial class KyBaoCaos
+    public partial class KyBaoCao
     {
         [Key]
         public int Id { get; set; }
@@ -26,5 +26,6 @@ namespace SystemReportMVC.Models
         [Column(TypeName = "datetime")]
         public DateTime? AuditTs { get; set; }
         public bool? IsDeleted { get; set; }
+
     }
 }

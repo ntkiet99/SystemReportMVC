@@ -1,0 +1,304 @@
+﻿@{
+    ViewBag.Title = "Thiết kế mẫu biểu báo cáo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ControllerName = "BaoCao";
+}
+<style>
+    .btn-action {
+        width: 110px;
+    }
+</style>
+<div class="wrapper">
+    <div class="page">
+        <div class="page-inner">
+            <header class="page-title-bar">
+                <div class="d-md-flex align-items-md-start">
+                    <h1 class="page-title mr-sm-auto">@ViewBag.Title</h1>
+                    <div class="btn-toolbar">
+                        @*<button type="button" class="btn btn-success" onclick="Popup('@Url.Action("AddOrUpdate",ControllerName)')">Thêm</button>*@
+                    </div>
+                </div>
+            </header>
+            <div class="page-section">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card card-fluid">
+                            <div class="card-body">
+                                <h4 class="card-title"> Danh sách mẫu biểu của báo cáo </h4>
+                                <div id="jstree6"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card card-fluid">
+                            <div class="card-body">
+                                <form id="form" action="/@ControllerName/AddOrUpdate" method="post" onsubmit="event.preventDefault();return SubmitForm(this);">
+                                    <fieldset>
+                                        <legend>Thông tin biểu mẫu</legend>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="tf1">Mã mẫu biểu</label>
+                                                    <input type="text" class="form-control" name="Id" id="Id" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="tf1">Mã mẫu biểu cha</label>
+                                                    <input type="text" class="form-control" name="MauBieuChaId" id="MauBieuChaId" readonly />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="tf1">Tên mẫu biểu</label>
+                                                    <input type="text" class="form-control" name="Ten" id="Ten" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="tf1">Chi tiêu</label>
+                                                    <select class="form-control">
+                                                        <option>Cho phép nhập</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="tf1">Loại báo cáo</label>
+                                                    <select id="NhomMauBieu" name="NhomMauBieu" class="form-control">
+                                                        <option value="1">Là nhóm</option>
+                                                        <option value="2">Không là nhóm</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="tf1">Ký hiệu</label>
+                                                    <input type="text" class="form-control" name="KyHieu" id="KyHieu" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="tf1">Ghi chú</label>
+                                                    <input type="text" class="form-control" name="GhiChu" id="GhiChu" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <button type="submit" class="btn btn-primary btn-action">Lưu</button>
+                                    <button type="button" class="btn btn-danger btn-action" onclick="DeleteForm()">Xóa</button>
+                                    <button type="button" class="btn btn-warning btn-action" onclick="Reset()">Reset</button>
+                                    <br />
+                                    <div id="btnGroupAction" class="btn-group" role="group" aria-label="Basic example" style="margin-top: 20px">
+                                        <button type="button"class="btn btn-secondary">Thiết kế chỉ tiêu</button>
+                                        <button type="button"  onclick="ActionNewPage('/thuoctinh')"  class="btn btn-secondary">Thiết kế thuộc tính</button> 
+                                        <button type="button" class="btn btn-secondary">Phân quyền</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function ActionNewPage(url) {
+            var urlPage = url +"?id=" + $("#Id").val();
+            window.open(urlPage);
+            return false;
+        }
+        $(document).ready(function () {
+            checkActionBtnShow();
+        });
+        function checkActionBtnShow() {
+            var nhomMauBieu = $("#NhomMauBieu").val();
+            if (nhomMauBieu == 1) {
+                $("#btnGroupAction").css("display", "none");
+            } else {
+                $("#btnGroupAction").css("display", "block");
+            }
+        }
+        function Reset() {
+            $("#form").trigger('reset');
+        }
+        function Popup(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalcontent').html(response);
+                    $("#exampleModal").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function SubmitForm(form) {
+            if (window.Loading)
+                return;
+            window.AddLoading();
+            var post_url = $(form).attr("action");
+            $.ajax({
+                url: post_url,
+                type: 'POST',
+                data: $(form).serialize(),
+                success: function (response) {
+                    if (response.Status) {
+                        toastr.success(response.Message);
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        $("#form").trigger('reset');
+                        $('#jstree6').jstree(true).refresh();
+                    } else {
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        toastr.error(response.Message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Đã xảy ra lỗi.");
+                }
+            });
+            return false;
+        }
+        function PopupDelete(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalDeleteContent').html(response);
+                    $("#exampleModalAlertDanger").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function ViewData(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#MauBieuChaId').val(response.MauBieuChaId);
+                    $('#Id').val(response.Id);
+                    $('#Ten').val(response.Ten);
+                    $('#GhiChu').val(response.GhiChu);
+                    $('#KyHieu').val(response.KyHieu);
+                    $('#NhomMauBieu').val(response.NhomMauBieu).change();
+                    checkActionBtnShow();
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function CreateDonViCon(id) {
+            $("#form").trigger('reset');
+            var url = "/@ControllerName/GetById/" + id;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#MauBieuChaId').val(response.Id);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function DeleteForm() {
+            var url = "/@ControllerName/Delete/" + $("#Id").val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (response) {
+                    if (response.Status) {
+                        $('#jstree6').jstree(true).refresh();
+                        $("#form").trigger('reset');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function Delete(id) {
+            var url = "/@ControllerName/Delete/" + id;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (response) {
+                    if (response.Status) {
+                        $('#jstree6').jstree(true).refresh();
+                        $("#form").trigger('reset');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        $('#jstree6').on('changed.jstree', function (e, data) {
+            toastr.options = {
+                'positionClass': 'toast-bottom-right'
+            };
+            //toastr.info('The selected id is: ' + data.selected);
+            if(data.node)
+                ViewData("/@ControllerName/GetById/" + data.node.id)
+        }).jstree({
+            plugins: ['types', 'contextmenu'],
+            core: {
+                data: {
+                    url: '/@ControllerName/LoadTreeDonVi',
+                    data: function data(node) {
+                        return {
+                            id: node.id
+                        };
+                    }
+                },
+                check_callback: true
+            },
+            "contextmenu": {
+                "items": function ($node) {
+                    var tree = $("#jstree6").jstree(true);
+                    return {
+                        "Create": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Tạo mẫu biểu báo cáo",
+                            "action": function (obj) {
+                                CreateDonViCon($node.id);
+                            }
+                        },
+                        "Remove": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "_disabled": $node.original.root ? true : false,
+                            "label": "Xóa mẫu biểu báo cáo",
+                            "action": function (obj) {
+                                Delete($node.id)
+                            }
+                        }
+                    };
+                }
+            },
+            types: Looper.jsTreeTypes()
+        });
+    </script>
+}

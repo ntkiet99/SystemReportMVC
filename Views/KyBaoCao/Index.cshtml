@@ -1,0 +1,331 @@
+﻿@{
+    ViewBag.Title = "Kỳ báo cáo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ControllerName = "KyBaoCao";
+}
+<style>
+    .btn-action {
+        width: 110px;
+    }
+</style>
+<div class="wrapper">
+    <div class="page">
+        <div class="page-inner">
+            <header class="page-title-bar">
+                <div class="d-md-flex align-items-md-start">
+                    <h1 class="page-title mr-sm-auto">@ViewBag.Title</h1>
+                    <div class="btn-toolbar">
+                        <button type="button" class="btn btn-success" onclick="Reset()">Thêm</button>
+                    </div>
+                </div>
+            </header>
+            <div class="page-section">
+                <div class="row">
+                    <div class="col-lg-6">
+                            <div class="card card-fluid">
+                                <div class="card-body">
+                                    <h4 class="card-title"> Thiết lập kỳ báo cáo </h4>
+                                    <div class="form-group">
+                                        <label for="tf1">Năm báo cáo</label>
+                                        <select id="SelectNam" name="SelectNam" class="form-control" data-toggle="select2" data-placeholder="Chọn năm báo cáo" data-allow-clear="true">
+                                            <option>2011</option>
+                                            <option>2012</option>
+                                            <option>2013</option>
+                                            <option>2014</option>
+                                            <option>2015</option>
+                                            <option>2016</option>
+                                            <option>2017</option>
+                                            <option>2018</option>
+                                            <option>2019</option>
+                                            <option>2020</option>
+                                            <option selected>2021</option>
+                                            <option>2022</option>
+                                            <option>2023</option>
+                                            <option>2024</option>
+                                            <option>2025</option>
+                                            <option>2026</option>
+                                            <option>2027</option>
+                                            <option>2028</option>
+                                            <option>2029</option>
+                                            <option>2030</option>
+                                        </select>
+                                    </div>
+                                    <div class="list-group list-group-divider mb-3">
+                                        <div class="list-group-header"> Danh sách kỳ báo cáo </div>
+                                        <div id="ListKyBaoCao">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-lg-6">
+                        <div class="card card-fluid">
+                            <div class="card-body">
+                                <form id="form" action="/KyBaoCao/AddOrUpdate" method="post" onsubmit="event.preventDefault();return SubmitForm(this);">
+                                    <fieldset>
+                                        <legend>Thông tin kỳ báo cáo</legend>
+                                        <input type="hidden" class="form-control" name="Id" id="Id" />
+                                        <input type="hidden" class="form-control" name="Nam" id="Nam" />
+                                        <div class="form-group">
+                                            <label for="tf1">Tên kỳ báo cáo</label>
+                                            <input type="text" class="form-control" name="Ten" id="Ten" />
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group" style="display: flex; flex-direction: column">
+                                                    <label for="tf1">Từ ngày</label>
+                                                    <input type="text" id="TuNgay" name="TuNgay" class="form-control flatpickr" data_toggle="flatpickr" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group" style="display: flex; flex-direction: column">
+                                                    <label for="tf1">Đến ngày</label>
+                                                    <input type="text" id="DenNgay" name="DenNgay" class="form-control flatpickr" data_toggle="flatpickr" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group" style="display: flex; flex-direction: column">
+                                                    <label for="tf1">Ngày gửi</label>
+                                                    <input type="text" id="NgayGui" name="NgayGui" class="form-control flatpickr" data_toggle="flatpickr" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group" style="display: flex; flex-direction: column">
+                                                    <label for="tf1">Ngày ban hành</label>
+                                                    <input type="text" id="NgayBanHanh" name="NgayBanHanh" class="form-control flatpickr" data_toggle="flatpickr" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <button type="submit" class="btn btn-primary btn-action">Lưu</button>
+                                    <button type="button" class="btn btn-danger btn-action" onclick="DeleteForm()">Xóa</button>
+                                    <button type="button" class="btn btn-warning btn-action" onclick="Reset()">Reset</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+         
+            DataNam();
+            GetKyBaoCao();
+        })
+        $('#SelectNam').change(function (e) {
+        
+            DataNam();
+            GetKyBaoCao();
+        });
+        flatpickr(".flatpickr", {
+            dateFormat: "d/m/Y",
+            appearence: 'top',
+        })
+        function DataNam() {
+            var nam = $("#SelectNam").val();
+            $("#Nam").val(nam);
+        }
+        function GetKyBaoCao() {
+            var nam = $("#Nam").val();
+            var url = "/KyBaoCao/GetListKyBaoCaoByNam/" + nam;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        if (response.length <= 0) {
+                            $("#ListKyBaoCao").html(`<div style="margin-left: 18px; font-size: 12px"> Không tìm thấy dữ liệu </div>`);
+                            return;
+                        }
+                        $("#ListKyBaoCao").html("");
+                        response.map((value, index) => {
+                            $("#ListKyBaoCao").append(`<a href="javascript:void(0)" onclick="ViewData('/KyBaoCao/GetById/${value.Id}')" class="list-group-item list-group-item-action">
+                                <div class="list-group-item-body">
+                                    <span class="list-group-item-text">${value.Ten}</span>
+                                </div>
+                            </a>`);
+                        })
+                    }
+                                    },
+                error: function (xhr, status) {
+                    $("#ListKyBaoCao").html(`<div style="margin-left: 18px; font-size: 12px"> Không tìm thấy dữ liệu </div>`);
+                    return;
+                }
+            });
+        }
+
+        function Reset() {
+            $("#form").trigger('reset');
+            $("#Id").val(0);
+        }
+        function Popup(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalcontent').html(response);
+                    $("#exampleModal").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function SubmitForm(form) {
+            if (window.Loading)
+                return;
+            window.AddLoading();
+            var post_url = $(form).attr("action");
+            $.ajax({
+                url: post_url,
+                type: 'POST',
+                data: $(form).serialize(),
+                success: function (response) {
+                    if (response.Status) {
+                        toastr.success(response.Message);
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        Reset();
+                        DataNam();
+                        GetKyBaoCao();
+                    } else {
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        toastr.error(response.Message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Đã xảy ra lỗi.");
+                }
+            });
+            return false;
+        }
+        function PopupDelete(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalDeleteContent').html(response);
+                    $("#exampleModalAlertDanger").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function ViewData(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#Id').val(response.Id);
+                    $('#Ten').val(response.Ten);
+                    $('#TuNgay').val(response.TuNgay);
+                    $('#DenNgay').val(response.DenNgay);
+                    $('#NgayGui').val(response.NgayGui);
+                    $('#NgayBanHanh').val(response.NgayBanHanh);
+                  
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function DeleteForm() {
+            var url = "/KyBaoCao/Delete/" + $("#Id").val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (response) {
+                    console.log(response);
+                    if (response.Status) {
+                        Reset();
+                        DataNam();
+                        GetKyBaoCao();
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function Delete(id) {
+            var url = "/DonVi/Delete/" + id;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (response) {
+                    if (response.Status) {
+                        $('#jstree6').jstree(true).refresh();
+                        $("#form").trigger('reset');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        $('#jstree6').on('changed.jstree', function (e, data) {
+            toastr.options = {
+                'positionClass': 'toast-bottom-right'
+            };
+            //toastr.info('The selected id is: ' + data.selected);
+            if (data.node)
+                ViewData("/DonVi/GetById/" + data.node.id)
+        }).jstree({
+            plugins: ['types', 'contextmenu'],
+            core: {
+                data: {
+                    url: '/DonVi/LoadTreeDonVi',
+                    data: function data(node) {
+                        return {
+                            id: node.id
+                        };
+                    }
+                },
+                check_callback: true
+            },
+            "contextmenu": {
+                "items": function ($node) {
+                    var tree = $("#jstree6").jstree(true);
+                    return {
+                        "Create": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Tạo đơn vị con",
+                            "action": function (obj) {
+                                CreateDonViCon($node.id);
+                            }
+                        },
+                        "Remove": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "_disabled": $node.original.root ? true : false,
+                            "label": "Xóa đơn vị",
+                            "action": function (obj) {
+                                Delete($node.id)
+                            }
+                        }
+                    };
+                }
+            },
+            types: Looper.jsTreeTypes()
+        });
+    </script>
+}

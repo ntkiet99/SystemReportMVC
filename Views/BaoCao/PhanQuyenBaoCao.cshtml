@@ -1,0 +1,308 @@
+﻿@{
+    ViewBag.Title = "Phân quyền";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ControllerName = "BaoCao";
+}
+<style>
+    .btn-action {
+        width: 110px;
+    }
+
+</style>
+<div class="wrapper">
+    <div class="page">
+        <div class="page-inner">
+            <header class="page-title-bar">
+                <div class="d-md-flex align-items-md-start">
+                    <h1 class="page-title mr-sm-auto">@ViewBag.Title cho mẫu biểu @ViewBag.TenMauBieu</h1>
+                    <div class="btn-toolbar">
+                        @*<button type="button" class="btn btn-success" onclick="Popup('@Url.Action("AddOrUpdate",ControllerName)')">Thêm</button>*@
+                    </div>
+                </div>
+            </header>
+            <div class="page-section">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card card-fluid">
+                            <div class="card-body">
+                                <h4 class="card-title"> Danh sách đơn vị</h4>
+                                <div id="jstree6"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div id="stepper" class="bs-stepper">
+                            <!-- .card -->
+                            <div class="card">
+                                <!-- .card-header -->
+                                <div class="card-header">
+                                    <!-- .steps -->
+                                    <div class="steps steps-" role="tablist">
+                                        <ul>
+                                            <li class="step" data-target="#test-l-1" data-validate="fieldset01">
+                                                <a href="#" class="step-trigger" tabindex="-1"><span class="step-indicator step-indicator-icon"><i class="oi oi-account-login"></i></span> <span class="d-none d-sm-inline">Danh sách đơn vị đã phân quyền</span></a>
+                                            </li>
+                                        </ul>
+                                    </div>   
+                                </div>
+                                <div class="card-body">
+                                    <form id="stepper-form" name="form" class="p-lg-4 p-sm-3 p-0" action="/@ControllerName/AddOrUpdate" method="post" onsubmit="event.preventDefault();return SubmitForm(this);">
+                                        <!-- .content -->
+                                        <div id="test-l-1" class="content dstepper-none fade">
+                                            <table id="table" class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>STT</th>
+                                                        <th>Tên đơn vị</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>    
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            LoadDanhSachDonVi('@ViewBag.MauBieuId');
+        })
+        function Reset() {
+            $("#stepper-form").trigger('reset');
+        }
+        function LoadDanhSachDonVi(MauBieuId) {
+                    var url = "/@ControllerName/LoadDanhSachDonViTheoMauBieuId/" + MauBieuId;
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function (response) {
+                            if (response) {
+                                console.log(response);
+                                $("#table tbody").html("");
+                                var str = ""
+                                response.map((value, index) => {
+                                    str += `<tr>
+                                    <td>${++index} </td>
+                                    <td>${value.Ten} </td>
+                                        <td>    <a class="btn btn-sm btn-icon btn-danger" onclick="XoaDonViTrongBaoCao('@ViewBag.MauBieuId','${value.Id}')" href="javascript:void(0)"><i class="far fa-trash-alt"></i></a> </td>
+                                            </tr>
+                                    `;
+                                });
+                                $("#table tbody").append(str);
+                      }
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function Popup(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalcontent').html(response);
+                    $("#exampleModal").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function SubmitForm(form) {
+            if (window.Loading)
+                return;
+            window.AddLoading();
+            var post_url = $(form).attr("action");
+            $.ajax({
+                url: post_url,
+                type: 'POST',
+                data: $(form).serialize(),
+                success: function (response) {
+                    if (response.Status) {
+                        toastr.success(response.Message);
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        $("#stepper-form").trigger('reset');
+                        $('#jstree6').jstree(true).refresh();
+                        RenderTable('@ViewBag.MauBieuId');
+                    } else {
+                        setTimeout(function () {
+                            window.removeLoader();
+                        }, 1000);
+                        toastr.error(response.Message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Đã xảy ra lỗi.");
+                }
+            });
+            return false;
+        }
+        function PopupDelete(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#modalDeleteContent').html(response);
+                    $("#exampleModalAlertDanger").modal("show");
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function ViewData(urlMem) {
+            var url = urlMem;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+                    $('#ThuocTinhChaId').val(response.ThuocTinhChaId);
+                    $('#Id').val(response.Id);
+                    $('#TenThuocTinh').val(response.TenThuocTinh);
+                    $('#NhanThuocTinh').val(response.NhanThuocTinh);
+                    $('#KieuDuLieu').val(response.KieuDuLieu).change();
+                    $('#Row').val(response.Row);
+                    $('#Col').val(response.Col);
+                    $('#Width').val(response.Width);
+                    $('#ThuTu').val(response.ThuTu);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function CreateDonViCon(id) {
+            $("#stepper-form").trigger('reset');
+            var url = "/@ControllerName/GetById/" + id;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (response) {
+
+                    $('#ThuocTinhChaId').val(response.Id);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+
+        function DeleteForm() {
+            var url = "/@ControllerName/Delete/" + $("#Id").val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (response) {
+                    if (response.Status) {
+                        $('#jstree6').jstree(true).refresh();
+                        $("#stepper-form").trigger('reset');
+                               RenderTable('@ViewBag.MauBieuId');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+                function PhanQuyen(maubieuid, donviid) {
+            var url = "/@ControllerName/PhanQuyenBaoCao";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    "mauBieuId": maubieuid,
+                    "donViId": donviid
+                },
+                success: function (response) {
+                    if (response.Status) {
+                        $('#jstree6').jstree(true).refresh();
+                        $("#stepper-form").trigger('reset');
+
+            LoadDanhSachDonVi('@ViewBag.MauBieuId');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function XoaDonViTrongBaoCao(maubieuid, donviid)  {
+            var url = "/@ControllerName/XoaDonViTrongBaoCao/";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    "mauBieuId": maubieuid,
+                    "donViId": donviid
+                },
+                success: function (response) {
+                    if (response.Status) {
+                        $('#jstree6').jstree(true).refresh();
+                        $("#stepper-form").trigger('reset');
+                           LoadDanhSachDonVi('@ViewBag.MauBieuId');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        $('#jstree6').on('changed.jstree', function (e, data) {
+            toastr.options = {
+                'positionClass': 'toast-bottom-right'
+            };
+            //toastr.info('The selected id is: ' + data.selected);
+            if(data.node)
+                ViewData("/DonVi/GetById/" + data.node.id)
+        }).jstree({
+            plugins: ['types', 'contextmenu'],
+            core: {
+                data: {
+                    url: '/DonVi/LoadTreeDonVi/@ViewBag.MauBieuId',
+                    data: function data(node) {
+                        return {
+                            id: node.id
+                        };
+                    }
+                },
+                check_callback: true
+            },
+            "contextmenu": {
+                "items": function ($node) {
+                    var tree = $("#jstree6").jstree(true);
+                    return {
+                        "Create": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "Thêm đơn vị",
+                            "action": function (obj) {
+                                PhanQuyen('@ViewBag.MauBieuId', $node.id)
+                            }
+                        }
+                    };
+                }
+            },
+            types: Looper.jsTreeTypes()
+        });
+    </script>
+}

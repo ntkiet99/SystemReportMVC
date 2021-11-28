@@ -178,10 +178,7 @@ C:\Users\ntkie\source\repos\SystemReportMVC\bin\Unity.Abstractions.pdb
 C:\Users\ntkie\source\repos\SystemReportMVC\bin\Unity.AspNet.WebApi.pdb
 C:\Users\ntkie\source\repos\SystemReportMVC\bin\Unity.AspNet.WebApi.xml
 C:\Users\ntkie\source\repos\SystemReportMVC\bin\Unity.Container.pdb
-D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.csproj.AssemblyReference.cache
 D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.csproj.CoreCompileInputs.cache
-D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.dll
-D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.pdb
 D:\Group DThU\SystemReportMVC\bin\SystemReportMVC.dll.config
 D:\Group DThU\SystemReportMVC\bin\SystemReportMVC.dll
 D:\Group DThU\SystemReportMVC\bin\SystemReportMVC.pdb
@@ -279,3 +276,5 @@ D:\Group DThU\SystemReportMVC\bin\Unity.AspNet.WebApi.xml
 D:\Group DThU\SystemReportMVC\bin\Unity.Container.pdb
 D:\Group DThU\SystemReportMVC\bin\Antlr3.Runtime.pdb
 D:\Group DThU\SystemReportMVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.dll
+D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.pdb

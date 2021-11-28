@@ -29,4 +29,10 @@ namespace SystemReportMVC.Helpers
         [Display(Name = "Từ chối")]
         CanBoXuLy = -1
     }
+
+    public enum ENhomMauBieu
+    {
+        LaNhom = 1,
+        KhongLaNhom = 2
+    }
 }

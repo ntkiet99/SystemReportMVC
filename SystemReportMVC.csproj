@@ -163,13 +163,18 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuditLogController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\BaoCaoController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ChiTieuController.cs" />
     <Compile Include="Controllers\DonViController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KyBaoCaoController.cs" />
+    <Compile Include="Controllers\MauBieuController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\QuyenController.cs" />
+    <Compile Include="Controllers\ThuocTinhController.cs" />
     <Compile Include="Data\DataContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -184,11 +189,21 @@
     <Compile Include="Helpers\QueryableExtensions.cs" />
     <Compile Include="Helpers\ResponseModel.cs" />
     <Compile Include="Interfaces\IAuditLogService.cs" />
+    <Compile Include="Interfaces\IChiTieuService.cs" />
     <Compile Include="Interfaces\IDonViService.cs" />
     <Compile Include="Interfaces\IFileService.cs" />
+    <Compile Include="Interfaces\IKyBaoCaoService.cs" />
+    <Compile Include="Interfaces\IMauBieuService.cs" />
     <Compile Include="Interfaces\IMenuService.cs" />
     <Compile Include="Interfaces\IRoleService.cs" />
+    <Compile Include="Interfaces\IThuocTinhService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="Models\DuLieuMauBieu.cs" />
+    <Compile Include="Models\ChiTieuThuocTinh.cs" />
+    <Compile Include="Models\ChiTieu.cs" />
+    <Compile Include="Models\KyBaoCao.cs" />
+    <Compile Include="Models\MauBieu.cs" />
+    <Compile Include="Models\ThuocTinh.cs" />
     <Compile Include="Models\HistoryData.cs" />
     <Compile Include="Models\AuditEntry.cs" />
     <Compile Include="Models\DonVi.cs" />
@@ -201,18 +216,26 @@
     <Compile Include="Models\TrangThai.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuditLogService.cs" />
+    <Compile Include="Services\ChiTieuService.cs" />
     <Compile Include="Services\DonViService.cs" />
     <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\KyBaoCaoService.cs" />
+    <Compile Include="Services\MauBieuService.cs" />
     <Compile Include="Services\MenuService.cs" />
     <Compile Include="Services\PermissionService.cs" />
     <Compile Include="Services\RoleService.cs" />
+    <Compile Include="Services\ThuocTinhService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="ViewModels\AuditLogVM.cs" />
+    <Compile Include="ViewModels\ChiTieuVM.cs" />
     <Compile Include="ViewModels\DonViVM.cs" />
     <Compile Include="ViewModels\GenericMessageVM.cs" />
+    <Compile Include="ViewModels\KyBaoCaoVM.cs" />
+    <Compile Include="ViewModels\MauBieuVM.cs" />
     <Compile Include="ViewModels\NguoiDungVM.cs" />
     <Compile Include="ViewModels\QuyenNguoiDungVM.cs" />
     <Compile Include="ViewModels\StateVM.cs" />
+    <Compile Include="ViewModels\ThuocTinhVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\apple-touch-icon.png" />
@@ -8830,6 +8853,15 @@
     <Content Include="Views\Auth\Index.cshtml" />
     <Content Include="Views\Auth\SideBar.cshtml" />
     <Content Include="Views\AuditLog\Index.cshtml" />
+    <Content Include="Views\KyBaoCao\Index.cshtml" />
+    <Content Include="Views\BaoCao\Index.cshtml" />
+    <Content Include="Views\MauBieu\Index.cshtml" />
+    <Content Include="Views\MauBieu\Add.cshtml" />
+    <Content Include="Views\MauBieu\Delete.cshtml" />
+    <Content Include="Views\ThuocTinh\Index.cshtml" />
+    <Content Include="Views\ChiTieu\Index.cshtml" />
+    <Content Include="Views\BaoCao\RenderMauBieu.cshtml" />
+    <Content Include="Views\BaoCao\PhanQuyenBaoCao.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -8866,6 +8898,7 @@
     <Folder Include="Assets\vendor\particles.js\demo\" />
     <Folder Include="Assets\vendor\stacked-menu\scss\" />
     <Folder Include="Assets\vendor\toastr\tests\" />
+    <Folder Include="Models1\" />
     <Folder Include="Views\Permissions\" />
   </ItemGroup>
   <ItemGroup>
