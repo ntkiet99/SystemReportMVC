@@ -35,4 +35,16 @@ namespace SystemReportMVC.Helpers
         LaNhom = 1,
         KhongLaNhom = 2
     }
+
+    public enum TrangThaiBaoCao
+    {
+        [Display(Name = "Chờ nhập liệu")]
+        ChoNhapLieu = 0,
+        [Display(Name = "Chờ duyệt")]
+        ChoDuyet = 1,
+        [Display(Name = "Chờ xuất bản")]
+        ChoXuatBan = 2,
+        [Display(Name = "Xuất bản")]
+        XuatBan = 3,
+    }
 }

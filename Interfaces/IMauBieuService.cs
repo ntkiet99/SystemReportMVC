@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SystemReportMVC.Helpers;
 using SystemReportMVC.Models;
 using SystemReportMVC.ViewModels;
 
@@ -17,5 +18,13 @@ namespace SystemReportMVC.Interfaces
         void PhanQuyenBaoCao(string mauBieuId, string donViId);
         List<DonVi> GetDonViByMauBieuId(string mauBieuId);
         void DeleteDonViInMauBieu(string mauBieuId, string donViId);
+
+        List<MauBieu> ListMauBaoCaoByDonViId(string donViId);
+        RenderMauBieuVM RenderMauBieuNhapLieu(AppUser user, string mauBieuId);
+        void SaveData(List<InputFormVM> inputs);
+        void TrangThaiNhapLieu(string mauBieuId, string donViId);
+        void TrangThaiDuyet(string mauBieuId, string donViId);
+        void TrangThaiXuatBan(string mauBieuId, string donViId);
+        List<DuLieuMauBieu> GetDuLieuMau(string donViId);
     }
 }

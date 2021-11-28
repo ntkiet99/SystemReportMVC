@@ -2,7 +2,7 @@
 @{ Layout = null; }
 <nav id="stacked-menu" class="stacked-menu stacked-menu-has-compact stacked-menu-has-hoverable">
     <ul class="menu">
-        @foreach (var item in Model)
+        @foreach (var item in Model.Where(x => x.IsDeleted !=true).ToList())
         {
             var active = item.Active ? "has-active" : "";
 
@@ -11,7 +11,7 @@
 <li class="menu-item has-child @active">
     <a href="javascript:void(0)" class="menu-link"><span class="menu-icon @item.Icon"></span> <span class="menu-text">@item.Ten</span></a>
     <ul class="menu">
-        @foreach (var chil in item.MenuCons)
+        @foreach (var chil in item.MenuCons.Where(x => x.IsDeleted != true).ToList())
         {
             var activeChil = chil.Active ? "has-active" : "";
 <li class="menu-item  @activeChil">

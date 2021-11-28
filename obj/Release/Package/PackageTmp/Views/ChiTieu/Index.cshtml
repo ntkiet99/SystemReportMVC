@@ -1,12 +1,13 @@
 ﻿@{
-    ViewBag.Title = "Thiết kế thuộc tính";
+    ViewBag.Title = "Thiết kế chỉ tiêu";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var ControllerName = "ThuocTinh";
+    var ControllerName = "ChiTieu";
 }
 <style>
     .btn-action {
         width: 110px;
     }
+
     table, th, td {
         border: 1px solid black;
         border-collapse: collapse;
@@ -17,7 +18,7 @@
         <div class="page-inner">
             <header class="page-title-bar">
                 <div class="d-md-flex align-items-md-start">
-                    <h1 class="page-title mr-sm-auto">@ViewBag.Title cho mẫu biểu @ViewBag.TenMauBieu</h1>
+                    <h1 class="page-title mr-sm-auto">@ViewBag.Title cho mẫu biểu <i> @ViewBag.TenMauBieu</i></h1>
                     <div class="btn-toolbar">
                         @*<button type="button" class="btn btn-success" onclick="Popup('@Url.Action("AddOrUpdate",ControllerName)')">Thêm</button>*@
                     </div>
@@ -28,7 +29,7 @@
                     <div class="col-lg-6">
                         <div class="card card-fluid">
                             <div class="card-body">
-                                <h4 class="card-title"> Danh sách thuộc tính</h4>
+                                <h4 class="card-title"> Danh sách chỉ tiêu</h4>
                                 <div id="jstree6"></div>
                             </div>
                         </div>
@@ -45,9 +46,9 @@
                                             <li class="step" data-target="#test-l-1" data-validate="fieldset01">
                                                 <a href="#" class="step-trigger" tabindex="-1"><span class="step-indicator step-indicator-icon"><i class="oi oi-account-login"></i></span> <span class="d-none d-sm-inline">Thông tin chung</span></a>
                                             </li>
-                                            <li class="step" data-target="#test-l-2" data-validate="fieldset02" style="width: 200px">
+                                            @*<li class="step" data-target="#test-l-2" data-validate="fieldset02" style="width: 200px">
                                                 <a href="#" class="step-trigger" tabindex="-1"><span class="step-indicator step-indicator-icon"><i class="oi oi-person"></i></span> <span class="d-none d-sm-inline">Cấu hình</span></a>
-                                            </li>
+                                            </li>*@
                                             @*<li class="step" data-target="#test-l-3" data-validate="fieldset03">
                                                     <a href="#" class="step-trigger" tabindex="-1"><span class="step-indicator step-indicator-icon"><i class="oi oi-credit-card"></i></span> <span class="d-none d-sm-inline">Payment</span></a>
                                                 </li>
@@ -68,28 +69,34 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label for="tf1">Mã thuộc tính</label>
+                                                            <label for="tf1">Mã chỉ tiêu</label>
                                                             <input type="text" class="form-control" name="Id" id="Id" />
                                                         </div>
                                                     </div>
+                                                    @*<div class="col-md-6">
+            <div class="form-group">
+                <label for="tf1">Mã thuộc tính cha</label>
+                <input type="text" class="form-control" name="ThuocTinhChaId" id="ThuocTinhChaId" />
+            </div>
+        </div>*@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label for="tf1">Mã thuộc tính cha</label>
-                                                            <input type="text" class="form-control" name="ThuocTinhChaId" id="ThuocTinhChaId" />
+                                                            <label for="tf1">Thứ tự</label>
+                                                            <input type="text" class="form-control" name="ThuTu" id="ThuTu" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label for="tf1">Tên thuộc tính</label>
-                                                            <input type="text" class="form-control" name="TenThuocTinh" id="TenThuocTinh" />
+                                                            <label for="tf1">Tên chỉ tiêu</label>
+                                                            <input type="text" class="form-control" name="TenChiTieu" id="TenChiTieu" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label for="tf1">Nhãn thuộc tính</label>
-                                                            <input type="text" class="form-control" name="NhanThuocTinh" id="NhanThuocTinh" />
+                                                            <label for="tf1">Nhãn chỉ tiêu</label>
+                                                            <input type="text" class="form-control" name="NhanChiTieu" id="NhanChiTieu" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -157,12 +164,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                @*<div class="row">
                     <div class="col-lg-12">
                         <div class="card card-fluid">
                             <div class="card-body">
                                 <h4 class="card-title">Xem trước bảng biểu </h4>
-                                <table id="renderTable" style="width: 100%" >
+                                <table id="renderTable" style="width: 100%">
                                     <thead>
 
                                     </thead>
@@ -171,7 +178,7 @@
                         </div>
 
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
     </div>
@@ -180,7 +187,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-          RenderTable('@ViewBag.MauBieuId');
+          //RenderTable('@ViewBag.MauBieuId');
         })
         function Reset() {
             $("#stepper-form").trigger('reset');
@@ -216,7 +223,7 @@
                         }, 1000);
                         $("#stepper-form").trigger('reset');
                         $('#jstree6').jstree(true).refresh();
-                        RenderTable('@ViewBag.MauBieuId');
+                        //RenderTable('@ViewBag.MauBieuId');
                     } else {
                         setTimeout(function () {
                             window.removeLoader();
@@ -250,10 +257,10 @@
                 url: url,
                 type: 'GET',
                 success: function (response) {
-                    $('#ThuocTinhChaId').val(response.ThuocTinhChaId);
+                    $('#ChiTieuChaId').val(response.ChiTieuChaId);
                     $('#Id').val(response.Id);
-                    $('#TenThuocTinh').val(response.TenThuocTinh);
-                    $('#NhanThuocTinh').val(response.NhanThuocTinh);
+                    $('#TenChiTieu').val(response.TenChiTieu);
+                    $('#NhanChiTieu').val(response.NhanChiTieu);
                     $('#KieuDuLieu').val(response.KieuDuLieu).change();
                     $('#Row').val(response.Row);
                     $('#Col').val(response.Col);
@@ -273,7 +280,7 @@
                 type: 'GET',
                 success: function (response) {
 
-                    $('#ThuocTinhChaId').val(response.Id);
+                    $('#ChiTieuChaId').val(response.Id);
                 },
                 error: function (xhr, status) {
                     alert(status);
@@ -320,7 +327,7 @@
                     if (response.Status) {
                         $('#jstree6').jstree(true).refresh();
                         $("#stepper-form").trigger('reset');
-                               RenderTable('@ViewBag.MauBieuId');
+                               //RenderTable('@ViewBag.MauBieuId');
                     }
                     toastr.success(response.Message);
                 },
@@ -342,7 +349,7 @@
                     toastr.success(response.Message);
                 },
                 error: function (xhr, status) {
-                    alert(status);
+                    //alert(status);
                 }
             });
         }
@@ -354,7 +361,7 @@
             if(data.node)
                 ViewData("/@ControllerName/GetById/" + data.node.id)
         }).jstree({
-            plugins: ['types', 'contextmenu'],
+            plugins: ['types'],
             core: {
                 data: {
                     url: '/@ControllerName/LoadTreeDonVi/@ViewBag.MauBieuId',

@@ -217,6 +217,44 @@ namespace SystemReportMVC.Services
             return data;
         }
 
+        public RenderMauBieuVM RenderMauBieuNhapLieu(AppUser user, string mauBieuId)
+        {
+            var data = new RenderMauBieuVM();
+            var maubieu = _context.MauBieus.Where(x => x.Id == mauBieuId && x.IsDeleted != true).FirstOrDefault();
+            data.MauBieuId = mauBieuId;
+            data.TenMauBieu = maubieu.Ten;
+            data.GhiChu = maubieu.GhiChu;
+            data.KyHieu = maubieu.KyHieu;
+            data.DonViNhan = _context.DonVis.Where(x => x.Id == user.DonViId).FirstOrDefault().Ten;
+            data.RenderThuocTinh = _thuocTinhService.GetListOrderByLevel(mauBieuId);
+            data.RenderChiTieu = RenderChiTieuNhapLieu(mauBieuId);
+            return data;
+        }
+        private List<RenderChiTieuVM> RenderChiTieuNhapLieu(string mauBieuId)
+        {
+            var result = new List<RenderChiTieuVM>();
+            var chitieu = _context.ChiTieus.Where(x => x.MauBieuId == mauBieuId && x.IsDeleted != true).OrderBy(x => x.ThuTu).ToList();
+            var listCTTT = _context.ChiTieuThuocTinhs.Where(x => x.IsDeleted != true && x.MauBieuId == mauBieuId).ToList();
+            var duLieus = _context.DuLieuMauBieus.Where(x => x.MauBieuId == mauBieuId).ToList();
+            foreach (var ct in chitieu)
+            {
+                var chiTieuVM = new RenderChiTieuVM();
+                chiTieuVM.TenChiTieu = ct.TenChiTieu;
+                chiTieuVM.ThuTu = ct.ThuTu ?? 0;
+                foreach (var item in listCTTT.Where(x => x.ChiTieuId == ct.Id).ToList())
+                {
+                    var dataTemp = duLieus.Where(x => x.ChiTieuThuocTinhId == item.Id).FirstOrDefault();
+                    var itemInput = new RenderInputVM();
+                    itemInput.Id = dataTemp.Id;
+                    itemInput.TypeInput = 1;
+                    itemInput.TypeValue = 1;
+                    itemInput.Value = dataTemp.Value;
+                    chiTieuVM.Inputs.Add(itemInput);
+                }
+                result.Add(chiTieuVM);
+            }
+            return result;
+        }
         private List<RenderChiTieuVM> RenderChiTieu(string mauBieuId)
         {
             var result = new List<RenderChiTieuVM>();
@@ -226,7 +264,7 @@ namespace SystemReportMVC.Services
             {
                 var chiTieuVM = new RenderChiTieuVM();
                 chiTieuVM.TenChiTieu = ct.TenChiTieu;
-                chiTieuVM.ThuTu = ct.ThuTu??0;
+                chiTieuVM.ThuTu = ct.ThuTu ?? 0;
                 foreach (var item in listCTTT.Where(x => x.ChiTieuId == ct.Id).ToList())
                 {
                     var itemInput = new RenderInputVM();
@@ -244,7 +282,7 @@ namespace SystemReportMVC.Services
         public void PhanQuyenBaoCao(string mauBieuId, string donViId)
         {
             var mauBieu = _context.MauBieus.Where(x => x.Id == mauBieuId && x.IsDeleted != true).FirstOrDefault();
-            if(mauBieu == default(MauBieu))
+            if (mauBieu == default(MauBieu))
                 throw new Exception("Không tìm thấy mẫu biểu");
             var donVi = _context.DonVis.Where(x => x.Id == donViId && x.IsDeleted != true).FirstOrDefault();
             if (donVi == default(DonVi))
@@ -264,6 +302,7 @@ namespace SystemReportMVC.Services
                 dlmb.MauBieuId = mauBieuId;
                 dlmb.DonViId = donViId;
                 dlmb.ChiTieuThuocTinhId = item.Id;
+                dlmb.TrangThai = (int)TrangThaiBaoCao.ChoNhapLieu;
                 data.Add(dlmb);
             }
             _context.DuLieuMauBieus.AddRange(data);
@@ -279,6 +318,58 @@ namespace SystemReportMVC.Services
         {
             var donvis = _context.DuLieuMauBieus.Where(x => x.MauBieuId == mauBieuId).Select(x => x.DonViId).ToList();
             return _context.DonVis.Where(x => donvis.Contains(x.Id)).ToList();
+        }
+
+        public List<MauBieu> ListMauBaoCaoByDonViId(string donViId)
+        {
+            var dulieusCTTT = _context.DuLieuMauBieus.Where(x => x.DonViId == donViId).Select(x => x.MauBieuId).ToList();
+            var mauBieumau = _context.MauBieus.Where(x => dulieusCTTT.Contains(x.Id) && x.IsDeleted != true).ToList();
+            return mauBieumau;
+        }
+
+        public void SaveData(List<InputFormVM> inputs)
+        {
+            var data = _context.DuLieuMauBieus.ToList();
+            foreach (var item in inputs)
+            {
+                var id = Convert.ToInt32(item.Id);
+                var entity = data.Where(x => x.Id == id).FirstOrDefault();
+                entity.Value = item.Value;
+
+            }
+            _context.SaveChanges();
+        }
+
+        public void TrangThaiNhapLieu(string mauBieuId, string donViId)
+        {
+            var data = _context.DuLieuMauBieus.Where(x => x.MauBieuId == mauBieuId && x.DonViId == donViId).ToList();
+            foreach (var item in data)
+            {
+                item.TrangThai = (int)TrangThaiBaoCao.ChoDuyet;
+            }
+            _context.SaveChanges();
+        }
+        public void TrangThaiDuyet(string mauBieuId, string donViId)
+        {
+            var data = _context.DuLieuMauBieus.Where(x => x.MauBieuId == mauBieuId && x.DonViId == donViId).ToList();
+            foreach (var item in data)
+            {
+                item.TrangThai = (int)TrangThaiBaoCao.ChoXuatBan;
+            }
+            _context.SaveChanges();
+        }
+        public void TrangThaiXuatBan(string mauBieuId, string donViId)
+        {
+            var data = _context.DuLieuMauBieus.Where(x => x.MauBieuId == mauBieuId && x.DonViId == donViId).ToList();
+            foreach (var item in data)
+            {
+                item.TrangThai = (int)TrangThaiBaoCao.XuatBan;
+            }
+            _context.SaveChanges();
+        }
+        public List<DuLieuMauBieu> GetDuLieuMau(string donViId)
+        {
+            return _context.DuLieuMauBieus.Where(x => x.DonViId == donViId).ToList();
         }
     }
 }

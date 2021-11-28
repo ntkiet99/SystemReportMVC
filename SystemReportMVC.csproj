@@ -166,12 +166,14 @@
     <Compile Include="Controllers\BaoCaoController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ChiTieuController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DonViController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KyBaoCaoController.cs" />
     <Compile Include="Controllers\MauBieuController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\NguoiDungController.cs" />
+    <Compile Include="Controllers\NhapLieuBaoCaoController.cs" />
     <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\QuyenController.cs" />
     <Compile Include="Controllers\ThuocTinhController.cs" />
@@ -230,6 +232,7 @@
     <Compile Include="ViewModels\ChiTieuVM.cs" />
     <Compile Include="ViewModels\DonViVM.cs" />
     <Compile Include="ViewModels\GenericMessageVM.cs" />
+    <Compile Include="ViewModels\InputFormVM.cs" />
     <Compile Include="ViewModels\KyBaoCaoVM.cs" />
     <Compile Include="ViewModels\MauBieuVM.cs" />
     <Compile Include="ViewModels\NguoiDungVM.cs" />
@@ -8862,6 +8865,12 @@
     <Content Include="Views\ChiTieu\Index.cshtml" />
     <Content Include="Views\BaoCao\RenderMauBieu.cshtml" />
     <Content Include="Views\BaoCao\PhanQuyenBaoCao.cshtml" />
+    <Content Include="Views\NhapLieuBaoCao\Index.cshtml" />
+    <Content Include="Views\NhapLieuBaoCao\Render.cshtml" />
+    <Content Include="Views\NhapLieuBaoCao\KiemTra.cshtml" />
+    <Content Include="Views\NhapLieuBaoCao\TongHop.cshtml" />
+    <Content Include="Views\NhapLieuBaoCao\BanHanh.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -8898,7 +8907,6 @@
     <Folder Include="Assets\vendor\particles.js\demo\" />
     <Folder Include="Assets\vendor\stacked-menu\scss\" />
     <Folder Include="Assets\vendor\toastr\tests\" />
-    <Folder Include="Models1\" />
     <Folder Include="Views\Permissions\" />
   </ItemGroup>
   <ItemGroup>

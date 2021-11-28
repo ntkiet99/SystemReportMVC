@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Bảng biểu";
+    ViewBag.Title = "Nhập liệu";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var ControllerName = "BaoCao";
 }
@@ -12,7 +12,7 @@
                 <div class="d-md-flex align-items-md-start">
                     <h1 class="page-title mr-sm-auto">@ViewBag.Title <i>@Model.TenMauBieu</i></h1>
                     <div class="btn-toolbar">
-                        @*<button type="button" class="btn btn-success" onclick="Popup('@Url.Action("AddOrUpdate",ControllerName)')">Thêm</button>*@
+                        <button type="button" class="btn btn-success" onclick="SaveForm()" style="width: 100px">Lưu</button>
                     </div>
                 </div>
             </header>
@@ -52,6 +52,7 @@
                                             </td>
                                             <td>
                                                 <span> @Model.DonViNhan</span>
+
                                             </td>
                                         </tr>
                                     </thead>
@@ -65,6 +66,7 @@
                                         border: 1px solid black;
                                         border-collapse: collapse;
                                     }
+
                                     #tableHeader table, #tableHeader th, #tableHeader td {
                                         border: none;
                                     }
@@ -83,7 +85,7 @@
                                                     <td>
                                                         @if (item.TypeInput == 1)
                                                         {
-                                                            <input id="@item.Id" style="border: none; width: 100%; text-align:center" />
+                                                            <input class="InputForm" id="@item.Id" style="border: none; width: 100%; text-align:center" value="@item.Value" />
                                                         }
                                                         else
                                                         {
@@ -269,6 +271,29 @@
                     if (response.Status) {
                         $('#jstree6').jstree(true).refresh();
                         $("#stepper-form").trigger('reset');
+                    }
+                    toastr.success(response.Message);
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            });
+        }
+        function SaveForm() {
+            var data = [];
+            str = '';
+            $(".InputForm").each(function () {
+                data.push({"Id": $(this).attr("id"), "Value": $(this).val()})
+            });
+            console.log(data);
+            var url = "/NhapLieuBaoCao/SaveData";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { "inputs": data },
+                success: function (response) {
+                    if (response.Status) {
+                        location.reload();
                     }
                     toastr.success(response.Message);
                 },

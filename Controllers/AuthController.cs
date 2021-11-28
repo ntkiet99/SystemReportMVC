@@ -40,8 +40,9 @@ namespace SystemReportMVC.Controllers
                     userSession.TaiKhoan = user.TaiKhoan;
                     userSession.Id = user.Id;
                     userSession.HoTen = user.HoTen;
+                    userSession.DonViId = user.DonViId;
                     Session.Add(Constants.USER_SESSION, userSession);
-                    return RedirectToAction("Index", "NguoiDung");
+                    return RedirectToAction("Index", "Dashboard");
                 }
             }
             catch (System.Exception)
@@ -73,12 +74,12 @@ namespace SystemReportMVC.Controllers
             {
                 if (cha.MenuCons.Count() > 0)
                 {
-                    var menucon = cha.MenuCons.Where(x => x.Active).FirstOrDefault();
+                    var menucon = cha.MenuCons.Where(x => x.Active && x.IsDeleted != true).FirstOrDefault();
                     if (menucon != null)
                         cha.Active = true;
                 }
             }
-            var checkMenuActive = menusCha.Where(x => x.Active).FirstOrDefault();
+            var checkMenuActive = menusCha.Where(x => x.Active && x.IsDeleted != true).FirstOrDefault();
             if (checkMenuActive == null)
                 menusCha.FirstOrDefault().Active = true;
             return View(menusCha);
