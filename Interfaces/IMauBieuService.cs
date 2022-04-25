@@ -26,5 +26,6 @@ namespace SystemReportMVC.Interfaces
         void TrangThaiDuyet(string mauBieuId, string donViId);
         void TrangThaiXuatBan(string mauBieuId, string donViId);
         List<DuLieuMauBieu> GetDuLieuMau(string donViId);
+        RenderMauBieuVM RenderMauBieuCPN(string mauBieuId);
     }
 }

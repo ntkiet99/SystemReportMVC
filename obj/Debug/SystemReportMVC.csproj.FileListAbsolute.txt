@@ -279,3 +279,4 @@ D:\Group DThU\SystemReportMVC\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlat
 D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.dll
 D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.pdb
 D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.csproj.AssemblyReference.cache
+D:\Group DThU\SystemReportMVC\obj\Debug\SystemReportMVC.csproj.CopyComplete

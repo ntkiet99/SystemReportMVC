@@ -99,3 +99,4 @@ D:\Group DThU\SystemReportMVC\obj\Release\SystemReportMVC.csproj.AssemblyReferen
 D:\Group DThU\SystemReportMVC\obj\Release\SystemReportMVC.csproj.CoreCompileInputs.cache
 D:\Group DThU\SystemReportMVC\obj\Release\SystemReportMVC.dll
 D:\Group DThU\SystemReportMVC\obj\Release\SystemReportMVC.pdb
+D:\Group DThU\SystemReportMVC\obj\Release\SystemReportMVC.csproj.CopyComplete

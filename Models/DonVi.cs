@@ -43,7 +43,7 @@ namespace SystemReportMVC.Models
 
         public List<DonViVM> GetAllChildrens(ICollection<DonVi> dvc)
         {
-            return dvc.Where(x => x.IsDeleted != true).OrderBy(x => x.AuditTs).Select(x => new DonViVM() { 
+            return dvc.Where(x => x.IsDeleted != true).ToList().OrderBy(x => x.AuditTs).Select(x => new DonViVM() { 
                 id = x.Id,
                 text = x.Ten,
                 type = "text",

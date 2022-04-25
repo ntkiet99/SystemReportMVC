@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SystemReportMVC.Interfaces;
+using SystemReportMVC.Models;
 using SystemReportMVC.ViewModels;
 
 namespace SystemReportMVC.Controllers
@@ -12,10 +13,12 @@ namespace SystemReportMVC.Controllers
     {
         private readonly IDonViService _donViService;
         private readonly IMauBieuService _mauBieuService;
-        public NhapLieuBaoCaoController(IMauBieuService mauBieuService, IDonViService donViService)
+        private readonly IThuocTinhService _thuocTinhService;
+        public NhapLieuBaoCaoController(IMauBieuService mauBieuService, IDonViService donViService, IThuocTinhService thuocTinhService)
         {
             _mauBieuService = mauBieuService;
             _donViService = donViService;
+            _thuocTinhService = thuocTinhService;
         }
 
         public ActionResult Index()
@@ -58,6 +61,30 @@ namespace SystemReportMVC.Controllers
             try
             {
                 _mauBieuService.SaveData(inputs);
+                return Json(new GenericMessageVM()
+                {
+                    Status = true,
+                    Message = $"Lưu dữ liệu thành công!",
+                    MessageType = GenericMessage.success
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new GenericMessageVM()
+                {
+                    Status = false,
+                    Message = $"{ex.Message}",
+                    MessageType = GenericMessage.error
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult NhapLieuBC(List<ThuocTinhNhapLieu> inputs)
+        {
+            try
+            {
+                _thuocTinhService.NhapLieuThuocTinh(inputs);
                 return Json(new GenericMessageVM()
                 {
                     Status = true,

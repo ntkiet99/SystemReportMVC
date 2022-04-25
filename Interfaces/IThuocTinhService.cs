@@ -13,5 +13,7 @@ namespace SystemReportMVC.Interfaces
         void Delete(string id);
         List<ThuocTinhVM> GetTreeJS(string bieuMauId);
         List<RenderThuocTinhVM> GetListOrderByLevel(string bieuMauId);
+        List<ThuocTinh> GetListMaxLevel(string bieuMauId);
+        void NhapLieuThuocTinh(List<ThuocTinhNhapLieu> list);
     }
 }

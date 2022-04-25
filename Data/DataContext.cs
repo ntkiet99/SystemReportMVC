@@ -31,6 +31,7 @@ namespace SystemReportMVC.Data
         public virtual DbSet<ThuocTinh> ThuocTinhs { get; set; }
         public virtual DbSet<ChiTieuThuocTinh> ChiTieuThuocTinhs { get; set; }
         public virtual DbSet<DuLieuMauBieu> DuLieuMauBieus { get; set; }
+        public virtual DbSet<ThuocTinhNhapLieu> ThuocTinhNhapLieus { get; set; }
         public static string GetCFConnection()
         {
             string Connection = "name=";
@@ -42,7 +43,7 @@ namespace SystemReportMVC.Data
                 case "anhdev99":
                     Connection += @"DevConnectionString";
                     break;
-                case "khanhvd":
+                default:
                     Connection += @"ProductionConnectionString";
                     break;
             }
@@ -108,6 +109,7 @@ namespace SystemReportMVC.Data
             modelBuilder.Entity<MauBieu>().ToTable("MauBieus");
             modelBuilder.Entity<ChiTieu>().ToTable("ChiTieus");
             modelBuilder.Entity<DuLieuMauBieu>().ToTable("DuLieuMauBieus");
+            modelBuilder.Entity<ThuocTinhNhapLieu>().ToTable("ThuocTinhNhapLieus");
             modelBuilder.Entity<MauBieu>().HasOptional(d => d.MauBieuCha)
                               .WithMany(p => p.MauBieuCons)
                               .HasForeignKey(d => d.MauBieuChaId)

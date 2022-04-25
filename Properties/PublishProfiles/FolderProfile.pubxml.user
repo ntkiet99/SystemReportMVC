@@ -4,8 +4,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>D:\Group DThU\SystemReportMVC.Release</_PublishTargetUrl>
-    <History>True|2021-11-27T15:31:15.8503964Z;</History>
+    <_PublishTargetUrl>D:\Group DThU\ReleaseVNSR</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="Assets/apple-touch-icon.png">
@@ -25890,10 +25889,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2021 08:08:49</publishTime>
     </File>
     <File Include="bin/SystemReportMVC.dll">
-      <publishTime>11/28/2021 19:17:34</publishTime>
+      <publishTime>04/25/2022 13:20:33</publishTime>
     </File>
     <File Include="bin/SystemReportMVC.pdb">
-      <publishTime>11/28/2021 19:17:34</publishTime>
+      <publishTime>04/25/2022 13:20:33</publishTime>
     </File>
     <File Include="bin/Unity.Abstractions.dll">
       <publishTime>11/26/2021 08:08:49</publishTime>
@@ -26031,13 +26030,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/28/2021 19:14:32</publishTime>
     </File>
     <File Include="Views/BaoCao/Index.cshtml">
-      <publishTime>11/28/2021 14:52:30</publishTime>
+      <publishTime>12/20/2021 09:34:09</publishTime>
     </File>
     <File Include="Views/BaoCao/PhanQuyenBaoCao.cshtml">
       <publishTime>11/28/2021 16:13:18</publishTime>
     </File>
     <File Include="Views/BaoCao/RenderMauBieu.cshtml">
       <publishTime>11/28/2021 18:34:14</publishTime>
+    </File>
+    <File Include="Views/BaoCao/RenderMauBieuCPN.cshtml">
+      <publishTime>12/20/2021 10:36:40</publishTime>
     </File>
     <File Include="Views/ChiTieu/Index.cshtml">
       <publishTime>11/28/2021 12:26:27</publishTime>
@@ -26139,7 +26141,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2021 08:08:48</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/27/2021 01:14:25</publishTime>
+      <publishTime>04/25/2022 13:20:37</publishTime>
     </File>
   </ItemGroup>
 </Project>

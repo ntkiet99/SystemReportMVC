@@ -34,6 +34,7 @@ namespace SystemReportMVC.Models
         public int? NguoiTaoId { get; set; }
         public int? NguoiCapNhatId { get; set; }
         public int? NhomMauBieu { get; set; }
+        public int? ChoPhepNhap { get; set; }
         [StringLength(150)]
         public string MauBieuChaId { get; set; }
         [Column(TypeName = "datetime")]

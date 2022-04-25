@@ -215,6 +215,7 @@
     <Compile Include="Models\NguoiDungQuyen.cs" />
     <Compile Include="Models\Quyen.cs" />
     <Compile Include="Models\QuyenMenu.cs" />
+    <Compile Include="Models\ThuocTinhNhapLieu.cs" />
     <Compile Include="Models\TrangThai.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuditLogService.cs" />
@@ -8871,6 +8872,7 @@
     <Content Include="Views\NhapLieuBaoCao\TongHop.cshtml" />
     <Content Include="Views\NhapLieuBaoCao\BanHanh.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\BaoCao\RenderMauBieuCPN.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

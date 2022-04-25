@@ -30,6 +30,7 @@ namespace SystemReportMVC.Services
             entity.Ten = model.Ten;
             entity.KyHieu = model.KyHieu;
             entity.NhomMauBieu = model.NhomMauBieu;
+            entity.ChoPhepNhap = model.ChoPhepNhap;
             entity.GhiChu = model.GhiChu;
             entity.CreateAt = DateTime.Now;
             entity.AuditTs = DateTime.Now;
@@ -56,7 +57,8 @@ namespace SystemReportMVC.Services
                 throw new Exception("Tồn tại mẫu biểu con.");
             if (entity == default(MauBieu))
                 throw new Exception("Không tìm thấy.");
-            _context.Remove(entity);
+            entity.IsDeleted = true;
+            _context.Update(entity);
             _context.WithTitle("Xóa mẫu biểu").SaveChangesWithLogs();
         }
 
@@ -112,6 +114,7 @@ namespace SystemReportMVC.Services
             entity.Ten = model.Ten;
             entity.KyHieu = model.KyHieu;
             entity.NhomMauBieu = model.NhomMauBieu;
+            entity.ChoPhepNhap = model.ChoPhepNhap;
             entity.GhiChu = model.GhiChu;
             entity.CreateAt = DateTime.Now;
             entity.AuditTs = DateTime.Now;
@@ -213,8 +216,85 @@ namespace SystemReportMVC.Services
             data.GhiChu = maubieu.GhiChu;
             data.KyHieu = maubieu.KyHieu;
             data.RenderThuocTinh = _thuocTinhService.GetListOrderByLevel(mauBieuId);
-            data.RenderChiTieu = RenderChiTieu(mauBieuId);
+            data.RenderChiTieu = RenderChiTieuNhapLieu(mauBieuId);
             return data;
+        }
+        public RenderMauBieuVM RenderMauBieuCPN(string mauBieuId)
+        {
+            var data = new RenderMauBieuVM();
+            var maubieu = _context.MauBieus.Where(x => x.Id == mauBieuId && x.IsDeleted != true).FirstOrDefault();
+            data.MauBieuId = mauBieuId;
+            data.TenMauBieu = maubieu.Ten;
+            data.GhiChu = maubieu.GhiChu;
+            data.KyHieu = maubieu.KyHieu;
+            data.RenderThuocTinh = _thuocTinhService.GetListOrderByLevel(mauBieuId);
+            data.RenderChiTieu = RenderChiTieuChoNhap(mauBieuId);
+            return data;
+        }
+        private List<RenderChiTieuVM> RenderChiTieuChoNhap(string mauBieuId)
+        {
+            var result = new List<RenderChiTieuVM>();
+            var chitieu = _context.ThuocTinhNhapLieus.Where(x => x.MauBieuId == mauBieuId).OrderBy(x => x.OrderBy).ToList();
+            var listCTTT = _context.ChiTieuThuocTinhs.Where(x => x.IsDeleted != true && x.MauBieuId == mauBieuId).ToList();
+
+            var soThuocTinh = _context.ThuocTinhs.Include(x => x.ThuocTinhCons).Where(x => x.MauBieuId == mauBieuId && x.IsDeleted != true && x.ThuocTinhCons.Count <= 0).ToList().Count;
+
+            //var row = chitieu.Count / soThuocTinh;
+            RenderChiTieuVM chiTieuVM = new RenderChiTieuVM();
+            var index = 0;
+            //for (int i = 0; i < row; i++)
+            //{
+
+            //    //if (index == 0)
+            //    //{
+            //    //    chiTieuVM = new RenderChiTieuVM();
+            //    //    chiTieuVM.TenChiTieu = index.ToString();
+            //    //    chiTieuVM.ThuTu = index;
+            //    //}
+            //    //var itemInput = new RenderInputVM();
+            //    //itemInput.Id = ct.Id;
+            //    //itemInput.TypeInput = 1;
+            //    //itemInput.TypeValue = 1;
+            //    //itemInput.Value = ct.Value;
+            //    //chiTieuVM.Inputs.Add(itemInput);
+            //    //if (index == soThuocTinh - 1)
+            //    //{
+            //    //    result.Add(chiTieuVM);
+            //    //    index = 0;
+            //    //}
+
+            //    //index++;
+            //}
+
+            foreach (var ct in chitieu)
+            {
+
+
+                if(index == 0)
+                {
+                    chiTieuVM = new RenderChiTieuVM();
+                    chiTieuVM.TenChiTieu = index.ToString();
+                    chiTieuVM.ThuTu = index;
+                }
+                var itemInput = new RenderInputVM();
+                itemInput.Id = ct.Id;
+                itemInput.TypeInput = 1;
+                itemInput.TypeValue = 1;
+                itemInput.Value = ct.Value;
+                chiTieuVM.Inputs.Add(itemInput);
+                if(index == soThuocTinh - 1)
+                {
+                    result.Add(chiTieuVM);
+                    index = 0;
+                }
+                else
+                {
+
+                    index++;
+                }
+
+            }
+            return result;
         }
 
         public RenderMauBieuVM RenderMauBieuNhapLieu(AppUser user, string mauBieuId)
@@ -244,12 +324,15 @@ namespace SystemReportMVC.Services
                 foreach (var item in listCTTT.Where(x => x.ChiTieuId == ct.Id).ToList())
                 {
                     var dataTemp = duLieus.Where(x => x.ChiTieuThuocTinhId == item.Id).FirstOrDefault();
-                    var itemInput = new RenderInputVM();
-                    itemInput.Id = dataTemp.Id;
-                    itemInput.TypeInput = 1;
-                    itemInput.TypeValue = 1;
-                    itemInput.Value = dataTemp.Value;
-                    chiTieuVM.Inputs.Add(itemInput);
+                    if(dataTemp != null)
+                    {
+                        var itemInput = new RenderInputVM();
+                        itemInput.Id = dataTemp.Id;
+                        itemInput.TypeInput = 1;
+                        itemInput.TypeValue = 1;
+                        itemInput.Value = dataTemp.Value;
+                        chiTieuVM.Inputs.Add(itemInput);
+                    }
                 }
                 result.Add(chiTieuVM);
             }
@@ -294,19 +377,27 @@ namespace SystemReportMVC.Services
             var data = new List<DuLieuMauBieu>();
             /// remove data
             var dulieuTonTai = _context.DuLieuMauBieus.Where(x => x.MauBieuId == mauBieuId && x.DonViId == donViId).ToList();
-            _context.DuLieuMauBieus.RemoveRange(dulieuTonTai);
-            _context.SaveChanges();
+            //_context.DuLieuMauBieus.RemoveRange(dulieuTonTai);
+            //_context.SaveChanges();
             foreach (var item in listCTTT)
             {
-                var dlmb = new DuLieuMauBieu();
-                dlmb.MauBieuId = mauBieuId;
-                dlmb.DonViId = donViId;
-                dlmb.ChiTieuThuocTinhId = item.Id;
-                dlmb.TrangThai = (int)TrangThaiBaoCao.ChoNhapLieu;
-                data.Add(dlmb);
+                var checkTonTai = dulieuTonTai.Where(x => x.ChiTieuThuocTinhId == item.Id).FirstOrDefault();
+                if(CheckTonTai == default(DuLieuMauBieu))
+                {
+                    var dlmb = new DuLieuMauBieu();
+                    dlmb.MauBieuId = mauBieuId;
+                    dlmb.DonViId = donViId;
+                    dlmb.ChiTieuThuocTinhId = item.Id;
+                    dlmb.TrangThai = (int)TrangThaiBaoCao.ChoNhapLieu;
+                    _context.DuLieuMauBieus.Add(dlmb);
+                }
+                else
+                {
+                    checkTonTai.TrangThai = (int)TrangThaiBaoCao.ChoNhapLieu;
+                }
+                _context.SaveChanges();
             }
-            _context.DuLieuMauBieus.AddRange(data);
-            _context.SaveChanges();
+
         }
         public void DeleteDonViInMauBieu(string mauBieuId, string donViId)
         {

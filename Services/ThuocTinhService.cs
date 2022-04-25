@@ -175,5 +175,29 @@ namespace SystemReportMVC.Services
             return result;
 
         }
+
+        public List<ThuocTinh> GetListMaxLevel(string bieuMauId)
+        {
+            var data = _context.ThuocTinhs.Include(x => x.ThuocTinhCons).Where(x => x.IsDeleted != true && x.MauBieuId == bieuMauId).OrderBy(x => x.Level).ToList();
+            //var result = new List<RenderThuocTinhVM>();
+            if (data.Count() <= 0)
+                return new List<ThuocTinh>();
+            var maxLevel = data.Max(x => x.Level).Value;
+            var tempThuocTinh = data.Where(x => x.ThuocTinhCons.Count == 0).OrderBy(x => x.ThuTu).ToList();
+            return tempThuocTinh;
+        }
+
+        public void NhapLieuThuocTinh(List<ThuocTinhNhapLieu> list)
+        {
+            var first = list.FirstOrDefault();
+            var data = _context.ThuocTinhNhapLieus.Where(x => x.ThuocTinhId == first.ThuocTinhId && x.MauBieuId == first.MauBieuId).ToList();
+            _context.ThuocTinhNhapLieus.RemoveRange(data);
+            _context.SaveChanges();
+            foreach (var item in list)
+            {
+                _context.ThuocTinhNhapLieus.Add(item);
+            }
+            _context.SaveChanges();
+        }
     }
 }

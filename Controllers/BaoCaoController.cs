@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using SystemReportMVC.Interfaces;
@@ -11,11 +13,13 @@ namespace SystemReportMVC.Controllers
     {
         private readonly IMauBieuService _mauBieuService;
         private readonly IKyBaoCaoService _kyBaoCaoService;
+        private readonly IThuocTinhService _thuocTinhService;
         string ControllerName = "mẫu biểu";
-        public BaoCaoController(IMauBieuService mauBieuService, IKyBaoCaoService kyBaoCaoService)
+        public BaoCaoController(IMauBieuService mauBieuService, IKyBaoCaoService kyBaoCaoService, IThuocTinhService thuocTinhService)
         {
             _mauBieuService = mauBieuService;
             _kyBaoCaoService = kyBaoCaoService;
+            _thuocTinhService = thuocTinhService;
         }
 
         public ActionResult Index()
@@ -28,6 +32,13 @@ namespace SystemReportMVC.Controllers
             var data = _mauBieuService.RenderMauBieu(id);
             return View(data);
         }
+
+        public ActionResult RenderMauBieuCPN(string id)
+        {
+            var data = _mauBieuService.RenderMauBieuCPN(id);
+            return View(data);
+        }
+
         public ActionResult PhanQuyenBaoCao(string id)
         {
             ViewBag.TenMauBieu = _mauBieuService.GetById(id).Ten;
@@ -38,6 +49,16 @@ namespace SystemReportMVC.Controllers
         {
             var data = _mauBieuService.GetDonViByMauBieuId(id);
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetMaxThuocTinh(string id)
+        {
+            var data = _thuocTinhService.GetListMaxLevel(id);
+            JsonSerializerSettings jss = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            var result = JsonConvert.SerializeObject(data, Formatting.Indented, jss);
+            return Json(JsonConvert.DeserializeObject<List<ThuocTinh>>(result), JsonRequestBehavior.AllowGet);
+
+    
+            //return Json(data, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult PhanQuyenBaoCao(string mauBieuId, string donViId)

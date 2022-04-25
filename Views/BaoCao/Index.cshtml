@@ -59,8 +59,9 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="tf1">Chi tiêu</label>
-                                                    <select class="form-control">
-                                                        <option>Cho phép nhập</option>
+                                                    <select id="ChoPhepNhap" name="ChoPhepNhap" class="form-control">
+                                                        <option value="1">Cho phép thêm dòng</option>
+                                                        <option value="-1">Nhập dữ liệu vào mẫu</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -94,10 +95,11 @@
                                     <button type="button" class="btn btn-warning btn-action" onclick="Reset()">Reset</button>
                                     <br />
                                     <div id="btnGroupAction" class="btn-group" role="group" aria-label="Basic example" style="margin-top: 20px">
-                                        <button type="button"  onclick="ActionNewPage('/chitieu')" class="btn btn-secondary">Thiết kế chỉ tiêu</button>
+                                        <button type="button" id="btnChiTieuCPN" onclick="ActionNewPage('/chitieu')" class="btn btn-secondary">Thiết kế chỉ tiêu</button>
                                         <button type="button"  onclick="ActionNewPage('/thuoctinh')"  class="btn btn-secondary">Thiết kế thuộc tính</button> 
                                         <button type="button"  onclick="ActionNewPage('/baocao/phanquyenbaocao')"  class="btn btn-secondary">Phân quyền</button>
-                                        <button type="button"  onclick="ActionNewPage('/baocao/rendermaubieu')"  class="btn btn-secondary">Xem biểu mẫu</button>
+                                        <button type="button" id="btnRenderMaubieucpn"  onclick="ActionNewPage('/baocao/rendermaubieucpn')"  class="btn btn-secondary">Xem biểu mẫu</button>
+                                        <button type="button" id="btnRenderMaubieu"  onclick="ActionNewPage('/baocao/rendermaubieu')"  class="btn btn-secondary">Xem biểu mẫu</button>
                                     </div>
                                 </form>
                             </div>
@@ -125,6 +127,17 @@
                 $("#btnGroupAction").css("display", "none");
             } else {
                 $("#btnGroupAction").css("display", "block");
+                console.log($("#ChoPhepNhap").val());
+                if ($("#ChoPhepNhap").val() == -1) {
+                    $("#btnChiTieuCPN").css("display", "inline-block");
+                    $("#btnRenderMaubieu").css("display", "inline-block");
+                    $("#btnRenderMaubieucpn").css("display", "none");
+                } else {
+                    $("#btnChiTieuCPN").css("display", "none");
+
+                    $("#btnRenderMaubieucpn").css("display", "inline-block");
+                    $("#btnRenderMaubieu").css("display", "none");
+                }
             }
         }
         function Reset() {
@@ -200,6 +213,7 @@
                     $('#GhiChu').val(response.GhiChu);
                     $('#KyHieu').val(response.KyHieu);
                     $('#NhomMauBieu').val(response.NhomMauBieu).change();
+                    $('#ChoPhepNhap').val(response.ChoPhepNhap).change();
                     checkActionBtnShow();
                 },
                 error: function (xhr, status) {
